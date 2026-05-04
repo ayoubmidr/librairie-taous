@@ -27,9 +27,12 @@ if [ "$ready" != "1" ]; then
     exit 1
 fi
 
-php artisan optimize:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
 php artisan migrate --force
 php artisan db:seed --force
+php artisan optimize:clear
 php artisan storage:link || true
 
 echo ""

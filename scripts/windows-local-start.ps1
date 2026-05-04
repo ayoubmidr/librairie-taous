@@ -167,9 +167,12 @@ if ($envContent -match "(?m)^APP_KEY=\s*$") {
     Run-Step "Creation de la cle Laravel" "php" @("artisan", "key:generate", "--force")
 }
 
-Run-Step "Nettoyage du cache Laravel" "php" @("artisan", "optimize:clear")
+Run-Step "Nettoyage de la configuration Laravel" "php" @("artisan", "config:clear")
+Run-Step "Nettoyage des routes Laravel" "php" @("artisan", "route:clear")
+Run-Step "Nettoyage des vues Laravel" "php" @("artisan", "view:clear")
 Run-Step "Preparation de la base SQLite" "php" @("artisan", "migrate", "--force")
 Run-Step "Ajout des donnees de demonstration" "php" @("artisan", "db:seed", "--force")
+Run-Step "Nettoyage final du cache Laravel" "php" @("artisan", "optimize:clear")
 
 $laravelLog = Join-Path $root "storage\logs\local-laravel-server.log"
 $laravelScript = Join-Path $root "scripts\run-laravel-server.ps1"
