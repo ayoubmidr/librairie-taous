@@ -13,6 +13,15 @@ interface CheckoutIndexProps {
     savedAddresses?: Address[];
 }
 
+const toNumber = (value: unknown): number => {
+    const number = Number.parseFloat(String(value ?? 0));
+    return Number.isFinite(number) ? number : 0;
+};
+
+const hasValue = (value: unknown): boolean => value !== null && value !== undefined && value !== '';
+
+const money = (value: unknown): string => toNumber(value).toFixed(2);
+
 const COUNTRIES = [
     { code: 'FR', name: 'France' },
     { code: 'BE', name: 'Belgique' },
@@ -248,7 +257,7 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                                                     {rate.description && <div className="text-stone-500 text-sm">{rate.description}</div>}
                                                 </div>
                                                 <div className="font-bold text-[#1e3a5f]">
-                                                    {rate.rate === 0 ? 'Gratuit' : `${parseFloat(String(rate.rate)).toFixed(2)} €`}
+                                                    {toNumber(rate.rate) === 0 ? 'Gratuit' : `${money(rate.rate)} €`}
                                                 </div>
                                             </label>
                                         ))}
@@ -288,7 +297,7 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                                     className="w-full flex items-center justify-center gap-2 bg-[#1e3a5f] text-white py-4 rounded-lg font-bold text-lg hover:bg-[#2d5a8e] transition-colors disabled:opacity-50"
                                 >
                                     <ShieldCheck size={20} />
-                                    {loading ? 'Traitement en cours...' : `Payer ${summary?.total?.toFixed(2)} €`}
+                                    {loading ? 'Traitement en cours...' : `Payer ${money(summary?.total)} €`}
                                 </button>
                             </div>
                         )}
@@ -308,7 +317,7 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                                             <p className="text-stone-400">x{item.quantity}</p>
                                         </div>
                                         <span className="font-semibold text-stone-800 flex-shrink-0">
-                                            {(item.price * item.quantity).toFixed(2)} €
+                                            {money(toNumber(item.price) * item.quantity)} €
                                         </span>
                                     </div>
                                 ))}
@@ -317,21 +326,21 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                             <div className="border-t border-stone-100 pt-4 space-y-2 text-sm">
                                 <div className="flex justify-between text-stone-600">
                                     <span>Sous-total</span>
-                                    <span>{summary?.subtotal?.toFixed(2)} €</span>
+                                    <span>{money(summary?.subtotal)} €</span>
                                 </div>
-                                {summary?.coupon_discount > 0 && (
+                                {toNumber(summary?.coupon_discount) > 0 && (
                                     <div className="flex justify-between text-green-600">
                                         <span>Réduction</span>
-                                        <span>-{summary.coupon_discount.toFixed(2)} €</span>
+                                        <span>-{money(summary.coupon_discount)} €</span>
                                     </div>
                                 )}
                                 <div className="flex justify-between text-stone-600">
                                     <span>Livraison</span>
-                                    <span>{summary?.shipping === 0 ? 'Gratuite' : summary?.shipping ? `${summary.shipping.toFixed(2)} €` : 'À calculer'}</span>
+                                    <span>{hasValue(summary?.shipping) && toNumber(summary?.shipping) === 0 ? 'Gratuite' : hasValue(summary?.shipping) ? `${money(summary.shipping)} €` : 'À calculer'}</span>
                                 </div>
                                 <div className="flex justify-between font-bold text-base pt-2 border-t border-stone-100">
                                     <span>Total TTC</span>
-                                    <span className="text-[#1e3a5f]">{summary?.total?.toFixed(2)} €</span>
+                                    <span className="text-[#1e3a5f]">{money(summary?.total)} €</span>
                                 </div>
                             </div>
                         </div>

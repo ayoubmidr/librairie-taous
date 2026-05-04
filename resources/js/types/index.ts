@@ -96,7 +96,7 @@ export interface CartItem {
   product_name: string;
   product_slug: string;
   image?: string;
-  price: number;
+  price: string | number;
   quantity: number;
   is_preorder: boolean;
   preorder_date?: string;
@@ -105,11 +105,11 @@ export interface CartItem {
 }
 
 export interface CartSummary {
-  subtotal: number;
-  coupon_discount: number;
+  subtotal: string | number;
+  coupon_discount: string | number;
   coupon?: string;
-  shipping: number;
-  total: number;
+  shipping: string | number;
+  total: string | number;
 }
 
 // ─── Order ────────────────────────────────────────────────────────────────────
@@ -212,7 +212,7 @@ export interface PaginatedData<T> {
 export interface ShippingRate {
   id: number;
   name: string;
-  rate: number;
+  rate: string | number;
   description?: string;
   estimated_days_min?: number;
   estimated_days_max?: number;

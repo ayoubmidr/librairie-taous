@@ -11,6 +11,15 @@ interface CartProps {
     summary: CartSummary;
 }
 
+const toNumber = (value: unknown): number => {
+    const number = Number.parseFloat(String(value ?? 0));
+    return Number.isFinite(number) ? number : 0;
+};
+
+const hasValue = (value: unknown): boolean => value !== null && value !== undefined && value !== '';
+
+const money = (value: unknown): string => toNumber(value).toFixed(2);
+
 export default function Cart({ cart, summary }: CartProps) {
     const [couponCode, setCouponCode] = useState('');
     const [couponLoading, setCouponLoading] = useState(false);
@@ -139,8 +148,8 @@ export default function Cart({ cart, summary }: CartProps) {
                                         </div>
 
                                         <div className="text-right">
-                                            <div className="font-bold text-[#1e3a5f]">{(item.price * item.quantity).toFixed(2)} €</div>
-                                            <div className="text-stone-400 text-xs">{item.price.toFixed(2)} € / unité</div>
+                                            <div className="font-bold text-[#1e3a5f]">{money(toNumber(item.price) * item.quantity)} €</div>
+                                            <div className="text-stone-400 text-xs">{money(item.price)} € / unité</div>
                                         </div>
                                     </div>
                                 </div>
@@ -186,23 +195,23 @@ export default function Cart({ cart, summary }: CartProps) {
                             <div className="space-y-3 text-sm">
                                 <div className="flex justify-between text-stone-600">
                                     <span>Sous-total</span>
-                                    <span>{summary?.subtotal?.toFixed(2)} €</span>
+                                    <span>{money(summary?.subtotal)} €</span>
                                 </div>
-                                {summary?.coupon_discount > 0 && (
+                                {toNumber(summary?.coupon_discount) > 0 && (
                                     <div className="flex justify-between text-green-600">
                                         <span>Code promo</span>
-                                        <span>-{summary.coupon_discount.toFixed(2)} €</span>
+                                        <span>-{money(summary.coupon_discount)} €</span>
                                     </div>
                                 )}
                                 <div className="flex justify-between text-stone-600">
                                     <span>Livraison</span>
-                                    <span className={summary?.shipping === 0 ? 'text-green-600 font-medium' : ''}>
-                                        {summary?.shipping === 0 ? <span className="flex items-center gap-1">Gratuite <PartyPopper size={14} /></span> : summary?.shipping ? `${summary.shipping.toFixed(2)} €` : 'Calculé au checkout'}
+                                    <span className={hasValue(summary?.shipping) && toNumber(summary?.shipping) === 0 ? 'text-green-600 font-medium' : ''}>
+                                        {hasValue(summary?.shipping) && toNumber(summary?.shipping) === 0 ? <span className="flex items-center gap-1">Gratuite <PartyPopper size={14} /></span> : hasValue(summary?.shipping) ? `${money(summary.shipping)} €` : 'Calculé au checkout'}
                                     </span>
                                 </div>
                                 <div className="border-t border-stone-100 pt-3 flex justify-between font-bold text-lg">
                                     <span>Total TTC</span>
-                                    <span className="text-[#1e3a5f]">{summary?.total?.toFixed(2)} €</span>
+                                    <span className="text-[#1e3a5f]">{money(summary?.total)} €</span>
                                 </div>
                             </div>
 
