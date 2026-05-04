@@ -22,11 +22,11 @@ export default function OrderDetail({ order }: OrderDetailProps) {
         <MainLayout title={`Commande ${order.order_number}`}>
             <div className="max-w-4xl mx-auto px-4 py-10">
                 <div className="flex items-center gap-3 mb-8">
-                    <Link href={route('account.index')} className="text-stone-400 hover:text-[#1a4731] text-sm">Mon compte</Link>
+                    <Link href={route('account.index')} className="text-stone-400 hover:text-[#1e3a5f] text-sm">Mon compte</Link>
                     <span className="text-stone-300">/</span>
-                    <Link href={route('account.orders')} className="text-stone-400 hover:text-[#1a4731] text-sm">Commandes</Link>
+                    <Link href={route('account.orders')} className="text-stone-400 hover:text-[#1e3a5f] text-sm">Commandes</Link>
                     <span className="text-stone-300">/</span>
-                    <h1 className="text-2xl font-serif font-bold text-[#0f2b1c]">{order.order_number}</h1>
+                    <h1 className="text-2xl font-serif font-bold text-[#0f2240]">{order.order_number}</h1>
                 </div>
 
                 {/* Status tracker */}
@@ -37,18 +37,18 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                                 <div key={step} className="flex items-center">
                                     <div className="flex flex-col items-center">
                                         <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
-                                            currentStep > i ? 'bg-[#1a4731] text-white' :
-                                            currentStep === i ? 'border-2 border-[#1a4731] text-[#1a4731]' :
+                                            currentStep > i ? 'bg-[#1e3a5f] text-white' :
+                                            currentStep === i ? 'border-2 border-[#1e3a5f] text-[#1e3a5f]' :
                                             'border-2 border-stone-200 text-stone-300'
                                         }`}>
                                             {currentStep > i ? <CheckCircle size={18} /> : i + 1}
                                         </div>
-                                        <span className={`text-xs mt-1 hidden sm:block ${currentStep >= i ? 'text-[#1a4731] font-medium' : 'text-stone-400'}`}>
+                                        <span className={`text-xs mt-1 hidden sm:block ${currentStep >= i ? 'text-[#1e3a5f] font-medium' : 'text-stone-400'}`}>
                                             {STATUS_LABELS[step]}
                                         </span>
                                     </div>
                                     {i < STATUS_STEPS.length - 1 && (
-                                        <div className={`w-8 sm:w-16 h-0.5 mx-2 ${currentStep > i ? 'bg-[#1a4731]' : 'bg-stone-200'}`} />
+                                        <div className={`w-8 sm:w-16 h-0.5 mx-2 ${currentStep > i ? 'bg-[#1e3a5f]' : 'bg-stone-200'}`} />
                                     )}
                                 </div>
                             ))}
@@ -74,7 +74,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                                     )}
                                     <div className="flex-1">
                                         {item.product_slug ? (
-                                            <Link href={route('products.show', item.product_slug)} className="font-medium text-stone-800 hover:text-[#1a4731] text-sm">
+                                            <Link href={route('products.show', item.product_slug)} className="font-medium text-stone-800 hover:text-[#1e3a5f] text-sm">
                                                 {item.product_name}
                                             </Link>
                                         ) : (
@@ -103,7 +103,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                                 <span>Livraison</span><span>{parseFloat(String(order.shipping_cost)).toFixed(2)} €</span>
                             </div>
                             <div className="flex justify-between font-bold text-lg pt-2 border-t border-stone-100">
-                                <span>Total</span><span className="text-[#1a4731]">{parseFloat(String(order.total)).toFixed(2)} €</span>
+                                <span>Total</span><span className="text-[#1e3a5f]">{parseFloat(String(order.total)).toFixed(2)} €</span>
                             </div>
                         </div>
                     </div>
@@ -112,7 +112,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                     <div className="space-y-4">
                         <div className="bg-white rounded-xl border border-stone-100 p-5">
                             <h3 className="font-semibold text-stone-800 mb-3 flex items-center gap-2">
-                                <Package size={16} className="text-[#1a4731]" /> Livraison
+                                <Package size={16} className="text-[#1e3a5f]" /> Livraison
                             </h3>
                             {order.shipping_address && (
                                 <div className="text-sm text-stone-600 space-y-1">
@@ -125,11 +125,11 @@ export default function OrderDetail({ order }: OrderDetailProps) {
                             {order.tracking_number && (
                                 <div className="mt-3 pt-3 border-t border-stone-100">
                                     <div className="flex items-center gap-2 text-sm">
-                                        <Truck size={14} className="text-[#1a4731]" />
+                                        <Truck size={14} className="text-[#1e3a5f]" />
                                         <span className="text-stone-600">N° de suivi : </span>
                                     </div>
                                     {order.tracking_url ? (
-                                        <a href={order.tracking_url} target="_blank" rel="noopener noreferrer" className="text-[#1a4731] font-mono text-sm hover:underline">
+                                        <a href={order.tracking_url} target="_blank" rel="noopener noreferrer" className="text-[#1e3a5f] font-mono text-sm hover:underline">
                                             {order.tracking_number}
                                         </a>
                                     ) : (
@@ -141,7 +141,7 @@ export default function OrderDetail({ order }: OrderDetailProps) {
 
                         <div className="bg-white rounded-xl border border-stone-100 p-5">
                             <h3 className="font-semibold text-stone-800 mb-3 flex items-center gap-2">
-                                <Clock size={16} className="text-[#1a4731]" /> Dates
+                                <Clock size={16} className="text-[#1e3a5f]" /> Dates
                             </h3>
                             <div className="text-sm space-y-2">
                                 <div className="flex justify-between">

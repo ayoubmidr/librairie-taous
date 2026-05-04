@@ -22,10 +22,10 @@ export default function Register() {
             <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
                 <div className="w-full max-w-md">
                     <div className="text-center mb-8">
-                        <div className="w-16 h-16 bg-[#1a4731] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <div className="w-16 h-16 bg-[#1e3a5f] rounded-2xl flex items-center justify-center mx-auto mb-4">
                             <span className="text-white font-serif text-3xl font-bold">T</span>
                         </div>
-                        <h1 className="text-2xl font-serif font-bold text-[#0f2b1c]">Créer un compte</h1>
+                        <h1 className="text-2xl font-serif font-bold text-[#0f2240]">Créer un compte</h1>
                         <p className="text-stone-500 mt-1">Rejoignez la communauté Librairie Taous</p>
                     </div>
 
@@ -38,7 +38,7 @@ export default function Register() {
                                     value={data.name}
                                     onChange={e => setData('name', e.target.value)}
                                     placeholder="Mohammed Dupont"
-                                    className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                    className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                 />
                                 {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                             </div>
@@ -50,7 +50,7 @@ export default function Register() {
                                     value={data.email}
                                     onChange={e => setData('email', e.target.value)}
                                     placeholder="votre@email.com"
-                                    className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                    className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                 />
                                 {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                             </div>
@@ -63,7 +63,7 @@ export default function Register() {
                                         value={data.password}
                                         onChange={e => setData('password', e.target.value)}
                                         placeholder="Minimum 8 caractères"
-                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 pr-10 text-sm focus:outline-none focus:border-[#1a4731]"
+                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 pr-10 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                     />
                                     <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400">
                                         {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -79,21 +79,21 @@ export default function Register() {
                                     value={data.password_confirmation}
                                     onChange={e => setData('password_confirmation', e.target.value)}
                                     placeholder="Répétez votre mot de passe"
-                                    className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                    className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                 />
                             </div>
 
                             <p className="text-xs text-stone-400">
                                 En créant un compte, vous acceptez nos{' '}
-                                <Link href={route('pages.show', 'cgv')} className="text-[#1a4731] hover:underline">CGV</Link>{' '}
+                                <Link href={route('pages.show', 'cgv')} className="text-[#1e3a5f] hover:underline">CGV</Link>{' '}
                                 et notre{' '}
-                                <Link href={route('pages.show', 'politique-confidentialite')} className="text-[#1a4731] hover:underline">politique de confidentialité</Link>.
+                                <Link href={route('pages.show', 'politique-confidentialite')} className="text-[#1e3a5f] hover:underline">politique de confidentialité</Link>.
                             </p>
 
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="w-full flex items-center justify-center gap-2 bg-[#1a4731] text-white py-3.5 rounded-lg font-semibold hover:bg-[#2d7a52] transition-colors disabled:opacity-50"
+                                className="w-full flex items-center justify-center gap-2 bg-[#1e3a5f] text-white py-3.5 rounded-lg font-semibold hover:bg-[#2d5a8e] transition-colors disabled:opacity-50"
                             >
                                 <UserPlus size={18} />
                                 {processing ? 'Création...' : 'Créer mon compte'}
@@ -102,7 +102,7 @@ export default function Register() {
 
                         <div className="mt-6 text-center text-sm text-stone-500">
                             Déjà un compte ?{' '}
-                            <Link href={route('login')} className="text-[#1a4731] font-semibold hover:underline">
+                            <Link href={route('login')} className="text-[#1e3a5f] font-semibold hover:underline">
                                 Se connecter
                             </Link>
                         </div>

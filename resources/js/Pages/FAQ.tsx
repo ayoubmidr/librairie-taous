@@ -25,7 +25,7 @@ export default function FAQ({ faqs }: FAQProps) {
         <MainLayout title="Foire aux questions">
             <div className="max-w-3xl mx-auto px-4 py-12">
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl font-serif font-bold text-[#0f2b1c] mb-4">Foire aux questions</h1>
+                    <h1 className="text-4xl font-serif font-bold text-[#0f2240] mb-4">Foire aux questions</h1>
                     <p className="text-stone-500 text-lg">Trouvez rapidement les réponses à vos questions</p>
                 </div>
 
@@ -39,7 +39,7 @@ export default function FAQ({ faqs }: FAQProps) {
                                 <span className="font-semibold text-stone-800 pr-4">{faq.question}</span>
                                 <ChevronDown
                                     size={20}
-                                    className={`text-[#1a4731] flex-shrink-0 transition-transform ${openId === faq.id ? 'rotate-180' : ''}`}
+                                    className={`text-[#1e3a5f] flex-shrink-0 transition-transform ${openId === faq.id ? 'rotate-180' : ''}`}
                                 />
                             </button>
                             {openId === faq.id && (
@@ -52,9 +52,9 @@ export default function FAQ({ faqs }: FAQProps) {
                 </div>
 
                 <div className="mt-12 bg-[#fdf8f0] rounded-2xl p-8 text-center border border-[#c9a84c]/20">
-                    <h2 className="text-xl font-serif font-bold text-[#0f2b1c] mb-3">Vous n'avez pas trouvé votre réponse ?</h2>
+                    <h2 className="text-xl font-serif font-bold text-[#0f2240] mb-3">Vous n'avez pas trouvé votre réponse ?</h2>
                     <p className="text-stone-600 mb-6">Notre équipe est disponible pour répondre à toutes vos questions</p>
-                    <a href={route('contact')} className="inline-flex items-center gap-2 bg-[#1a4731] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#2d7a52] transition-colors">
+                    <a href={route('contact')} className="inline-flex items-center gap-2 bg-[#1e3a5f] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#2d5a8e] transition-colors">
                         Nous contacter
                     </a>
                 </div>

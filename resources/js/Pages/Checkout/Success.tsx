@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
-import { CheckCircle, Package, Mail, ChevronRight } from 'lucide-react';
+import { CheckCircle, Package, Mail, ChevronRight, AlertTriangle } from 'lucide-react';
 import { Order } from '@/types';
 
 interface CheckoutSuccessProps {
@@ -15,7 +15,7 @@ export default function CheckoutSuccess({ order }: CheckoutSuccessProps) {
                     <CheckCircle size={40} className="text-green-500" />
                 </div>
 
-                <h1 className="text-3xl font-serif font-bold text-[#0f2b1c] mb-4">
+                <h1 className="text-3xl font-serif font-bold text-[#0f2240] mb-4">
                     Commande confirmée !
                 </h1>
 
@@ -29,7 +29,7 @@ export default function CheckoutSuccess({ order }: CheckoutSuccessProps) {
                 <div className="bg-white rounded-2xl border border-stone-100 p-6 mb-8 text-left">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="font-semibold text-stone-800">Récapitulatif</h2>
-                        <span className="text-[#1a4731] font-mono font-bold">{order?.order_number}</span>
+                        <span className="text-[#1e3a5f] font-mono font-bold">{order?.order_number}</span>
                     </div>
 
                     <div className="space-y-3">
@@ -48,21 +48,21 @@ export default function CheckoutSuccess({ order }: CheckoutSuccessProps) {
                         </div>
                         <div className="flex justify-between font-bold text-base">
                             <span>Total payé</span>
-                            <span className="text-[#1a4731]">{parseFloat(String(order?.total || 0)).toFixed(2)} €</span>
+                            <span className="text-[#1e3a5f]">{parseFloat(String(order?.total || 0)).toFixed(2)} €</span>
                         </div>
                     </div>
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-4 mb-8">
                     <div className="bg-[#fdf8f0] rounded-xl p-4 flex gap-3">
-                        <Package size={20} className="text-[#1a4731] flex-shrink-0 mt-0.5" />
+                        <Package size={20} className="text-[#1e3a5f] flex-shrink-0 mt-0.5" />
                         <div className="text-left text-sm">
                             <p className="font-semibold text-stone-800">Expédition</p>
                             <p className="text-stone-500">Votre commande sera expédiée sous 24-48h</p>
                         </div>
                     </div>
                     <div className="bg-[#fdf8f0] rounded-xl p-4 flex gap-3">
-                        <Mail size={20} className="text-[#1a4731] flex-shrink-0 mt-0.5" />
+                        <Mail size={20} className="text-[#1e3a5f] flex-shrink-0 mt-0.5" />
                         <div className="text-left text-sm">
                             <p className="font-semibold text-stone-800">Email de suivi</p>
                             <p className="text-stone-500">Vous recevrez un email avec le numéro de suivi</p>
@@ -72,7 +72,7 @@ export default function CheckoutSuccess({ order }: CheckoutSuccessProps) {
 
                 {order?.has_preorder && (
                     <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-8 text-sm text-orange-700 text-left">
-                        <p className="font-medium mb-1">⚠️ Votre commande contient des articles en précommande</p>
+                        <p className="font-medium mb-1 flex items-center gap-1"><AlertTriangle size={16} /> Votre commande contient des articles en précommande</p>
                         <p>Ces articles seront expédiés séparément à leur date de disponibilité.</p>
                     </div>
                 )}

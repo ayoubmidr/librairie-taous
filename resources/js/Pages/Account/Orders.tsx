@@ -27,9 +27,9 @@ export default function Orders({ orders }: OrdersProps) {
         <MainLayout title="Mes commandes">
             <div className="max-w-4xl mx-auto px-4 py-10">
                 <div className="flex items-center gap-3 mb-8">
-                    <Link href={route('account.index')} className="text-stone-400 hover:text-[#1a4731] text-sm">Mon compte</Link>
+                    <Link href={route('account.index')} className="text-stone-400 hover:text-[#1e3a5f] text-sm">Mon compte</Link>
                     <span className="text-stone-300">/</span>
-                    <h1 className="text-2xl font-serif font-bold text-[#0f2b1c]">Mes commandes</h1>
+                    <h1 className="text-2xl font-serif font-bold text-[#0f2240]">Mes commandes</h1>
                 </div>
 
                 {orders?.data?.length > 0 ? (
@@ -41,7 +41,7 @@ export default function Orders({ orders }: OrdersProps) {
                                 className="flex items-center gap-4 bg-white rounded-xl border border-stone-100 p-5 hover:shadow-sm transition-all"
                             >
                                 <div className="w-12 h-12 bg-[#f5efe0] rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <ShoppingBag size={20} className="text-[#1a4731]" />
+                                    <ShoppingBag size={20} className="text-[#1e3a5f]" />
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-3 mb-1">
@@ -55,7 +55,7 @@ export default function Orders({ orders }: OrdersProps) {
                                     </p>
                                 </div>
                                 <div className="text-right flex-shrink-0">
-                                    <p className="font-bold text-[#1a4731] text-lg">{parseFloat(String(order.total)).toFixed(2)} €</p>
+                                    <p className="font-bold text-[#1e3a5f] text-lg">{parseFloat(String(order.total)).toFixed(2)} €</p>
                                 </div>
                                 <ChevronRight size={16} className="text-stone-300 flex-shrink-0" />
                             </Link>

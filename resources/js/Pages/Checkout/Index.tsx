@@ -52,7 +52,7 @@ function Input({ type = 'text', ...props }: InputProps) {
     return (
         <input
             type={type}
-            className="w-full border border-stone-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#1a4731] focus:ring-1 focus:ring-[#1a4731]/20 transition-colors"
+            className="w-full border border-stone-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#1e3a5f] focus:ring-1 focus:ring-[#1e3a5f]/20 transition-colors"
             {...props}
         />
     );
@@ -142,14 +142,14 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                 <div className="flex items-center justify-center mb-10">
                     {steps.map((s, i) => (
                         <div key={s.num} className="flex items-center">
-                            <div className={`flex items-center gap-2 ${step >= s.num ? 'text-[#1a4731]' : 'text-stone-300'}`}>
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step > s.num ? 'bg-[#1a4731] text-white' : step === s.num ? 'border-2 border-[#1a4731] text-[#1a4731]' : 'border-2 border-stone-200 text-stone-300'}`}>
+                            <div className={`flex items-center gap-2 ${step >= s.num ? 'text-[#1e3a5f]' : 'text-stone-300'}`}>
+                                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step > s.num ? 'bg-[#1e3a5f] text-white' : step === s.num ? 'border-2 border-[#1e3a5f] text-[#1e3a5f]' : 'border-2 border-stone-200 text-stone-300'}`}>
                                     {step > s.num ? '✓' : s.num}
                                 </div>
                                 <span className="text-sm font-medium hidden sm:block">{s.label}</span>
                             </div>
                             {i < steps.length - 1 && (
-                                <div className={`w-16 sm:w-24 h-0.5 mx-3 ${step > s.num ? 'bg-[#1a4731]' : 'bg-stone-200'}`} />
+                                <div className={`w-16 sm:w-24 h-0.5 mx-3 ${step > s.num ? 'bg-[#1e3a5f]' : 'bg-stone-200'}`} />
                             )}
                         </div>
                     ))}
@@ -164,7 +164,7 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                                 <div className="flex items-center justify-between mb-5">
                                     <h2 className="font-serif font-bold text-lg text-stone-800">1. Adresse de livraison</h2>
                                     {step > 1 && (
-                                        <button onClick={() => setStep(1)} className="text-sm text-[#1a4731] hover:underline">Modifier</button>
+                                        <button onClick={() => setStep(1)} className="text-sm text-[#1e3a5f] hover:underline">Modifier</button>
                                     )}
                                 </div>
 
@@ -198,14 +198,14 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                                             <select
                                                 value={shippingAddress.country}
                                                 onChange={e => setShippingAddress({...shippingAddress, country: e.target.value})}
-                                                className="w-full border border-stone-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#1a4731]"
+                                                className="w-full border border-stone-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                             >
                                                 {COUNTRIES.map(c => <option key={c.code} value={c.code}>{c.name}</option>)}
                                             </select>
                                         </FormField>
 
                                         <div className="col-span-2 pt-2">
-                                            <button onClick={handleNextStep} className="w-full flex items-center justify-center gap-2 bg-[#1a4731] text-white py-3.5 rounded-lg font-semibold hover:bg-[#2d7a52] transition-colors">
+                                            <button onClick={handleNextStep} className="w-full flex items-center justify-center gap-2 bg-[#1e3a5f] text-white py-3.5 rounded-lg font-semibold hover:bg-[#2d5a8e] transition-colors">
                                                 Continuer vers la livraison <ChevronRight size={18} />
                                             </button>
                                         </div>
@@ -225,7 +225,7 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                             <div className={`bg-white rounded-xl border p-6 mb-4 ${step !== 2 ? 'border-green-200 bg-green-50/30' : 'border-stone-100'}`}>
                                 <div className="flex items-center justify-between mb-5">
                                     <h2 className="font-serif font-bold text-lg text-stone-800">2. Mode de livraison</h2>
-                                    {step > 2 && <button onClick={() => setStep(2)} className="text-sm text-[#1a4731] hover:underline">Modifier</button>}
+                                    {step > 2 && <button onClick={() => setStep(2)} className="text-sm text-[#1e3a5f] hover:underline">Modifier</button>}
                                 </div>
 
                                 {step === 2 ? (
@@ -234,26 +234,26 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                                             { id: 1, name: 'Colissimo — Livraison standard', rate: 5.90, description: '3-5 jours ouvrés' },
                                             { id: 2, name: 'Chronopost — Livraison express', rate: 9.90, description: '1-2 jours ouvrés' },
                                         ]).map((rate) => (
-                                            <label key={rate.id} className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-colors ${selectedShipping === rate.id ? 'border-[#1a4731] bg-[#fdf8f0]' : 'border-stone-100 hover:border-stone-200'}`}>
+                                            <label key={rate.id} className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-colors ${selectedShipping === rate.id ? 'border-[#1e3a5f] bg-[#fdf8f0]' : 'border-stone-100 hover:border-stone-200'}`}>
                                                 <input
                                                     type="radio"
                                                     name="shipping"
                                                     value={rate.id}
                                                     checked={selectedShipping === rate.id}
                                                     onChange={() => setSelectedShipping(rate.id)}
-                                                    className="text-[#1a4731] focus:ring-[#1a4731]"
+                                                    className="text-[#1e3a5f] focus:ring-[#1e3a5f]"
                                                 />
                                                 <div className="flex-1">
                                                     <div className="font-medium text-stone-800">{rate.name}</div>
                                                     {rate.description && <div className="text-stone-500 text-sm">{rate.description}</div>}
                                                 </div>
-                                                <div className="font-bold text-[#1a4731]">
+                                                <div className="font-bold text-[#1e3a5f]">
                                                     {rate.rate === 0 ? 'Gratuit' : `${parseFloat(String(rate.rate)).toFixed(2)} €`}
                                                 </div>
                                             </label>
                                         ))}
 
-                                        <button onClick={handleNextStep} className="w-full flex items-center justify-center gap-2 bg-[#1a4731] text-white py-3.5 rounded-lg font-semibold hover:bg-[#2d7a52] transition-colors mt-4">
+                                        <button onClick={handleNextStep} className="w-full flex items-center justify-center gap-2 bg-[#1e3a5f] text-white py-3.5 rounded-lg font-semibold hover:bg-[#2d5a8e] transition-colors mt-4">
                                             Continuer vers le paiement <ChevronRight size={18} />
                                         </button>
                                     </div>
@@ -269,7 +269,7 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                                 <h2 className="font-serif font-bold text-lg text-stone-800 mb-5">3. Paiement sécurisé</h2>
 
                                 <div className="bg-[#fdf8f0] border border-[#c9a84c]/20 rounded-xl p-4 mb-6">
-                                    <div className="flex items-center gap-3 text-[#1a4731] font-semibold mb-2">
+                                    <div className="flex items-center gap-3 text-[#1e3a5f] font-semibold mb-2">
                                         <Lock size={18} /> Paiement 100% sécurisé
                                     </div>
                                     <p className="text-stone-600 text-sm">
@@ -285,7 +285,7 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                                 <button
                                     onClick={handlePlaceOrder}
                                     disabled={loading}
-                                    className="w-full flex items-center justify-center gap-2 bg-[#1a4731] text-white py-4 rounded-lg font-bold text-lg hover:bg-[#2d7a52] transition-colors disabled:opacity-50"
+                                    className="w-full flex items-center justify-center gap-2 bg-[#1e3a5f] text-white py-4 rounded-lg font-bold text-lg hover:bg-[#2d5a8e] transition-colors disabled:opacity-50"
                                 >
                                     <ShieldCheck size={20} />
                                     {loading ? 'Traitement en cours...' : `Payer ${summary?.total?.toFixed(2)} €`}
@@ -331,7 +331,7 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                                 </div>
                                 <div className="flex justify-between font-bold text-base pt-2 border-t border-stone-100">
                                     <span>Total TTC</span>
-                                    <span className="text-[#1a4731]">{summary?.total?.toFixed(2)} €</span>
+                                    <span className="text-[#1e3a5f]">{summary?.total?.toFixed(2)} €</span>
                                 </div>
                             </div>
                         </div>

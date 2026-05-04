@@ -13,9 +13,9 @@ export default function Wishlist({ products }: WishlistProps) {
         <MainLayout title="Mes favoris">
             <div className="max-w-7xl mx-auto px-4 py-10">
                 <div className="flex items-center gap-3 mb-8">
-                    <Link href={route('account.index')} className="text-stone-400 hover:text-[#1a4731] text-sm">Mon compte</Link>
+                    <Link href={route('account.index')} className="text-stone-400 hover:text-[#1e3a5f] text-sm">Mon compte</Link>
                     <span className="text-stone-300">/</span>
-                    <h1 className="text-2xl font-serif font-bold text-[#0f2b1c]">Mes favoris</h1>
+                    <h1 className="text-2xl font-serif font-bold text-[#0f2240]">Mes favoris</h1>
                 </div>
 
                 {products?.length > 0 ? (

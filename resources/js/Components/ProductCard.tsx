@@ -53,7 +53,7 @@ export default function ProductCard({ product, showAddToCart = true }: ProductCa
                 {/* Badges */}
                 <div className="absolute top-2 left-2 flex flex-col gap-1">
                     {product.is_new && (
-                        <span className="bg-[#1a4731] text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                        <span className="bg-[#1e3a5f] text-white text-xs font-bold px-2 py-0.5 rounded-full">
                             Nouveauté
                         </span>
                     )}
@@ -85,13 +85,13 @@ export default function ProductCard({ product, showAddToCart = true }: ProductCa
 
             <div className="p-4">
                 {product.category && (
-                    <span className="text-xs text-[#1a4731] font-medium uppercase tracking-wider">
+                    <span className="text-xs text-[#1e3a5f] font-medium uppercase tracking-wider">
                         {product.category.name}
                     </span>
                 )}
 
                 <Link href={route('products.show', product.slug)}>
-                    <h3 className="mt-1 text-stone-800 font-semibold text-sm leading-snug line-clamp-2 hover:text-[#1a4731] transition-colors">
+                    <h3 className="mt-1 text-stone-800 font-semibold text-sm leading-snug line-clamp-2 hover:text-[#1e3a5f] transition-colors">
                         {product.name}
                     </h3>
                 </Link>
@@ -115,7 +115,7 @@ export default function ProductCard({ product, showAddToCart = true }: ProductCa
 
                 <div className="mt-2 flex items-center justify-between">
                     <div className="flex items-baseline gap-2">
-                        <span className="text-[#1a4731] font-bold text-lg">
+                        <span className="text-[#1e3a5f] font-bold text-lg">
                             {parseFloat(String(product.price)).toFixed(2)} €
                         </span>
                         {product.compare_price && parseFloat(String(product.compare_price)) > parseFloat(String(product.price)) && (
@@ -129,7 +129,7 @@ export default function ProductCard({ product, showAddToCart = true }: ProductCa
                         <button
                             onClick={handleAddToCart}
                             disabled={loading}
-                            className="w-9 h-9 bg-[#1a4731] text-white rounded-lg flex items-center justify-center hover:bg-[#2d7a52] transition-colors disabled:opacity-50 flex-shrink-0"
+                            className="w-9 h-9 bg-[#1e3a5f] text-white rounded-lg flex items-center justify-center hover:bg-[#2d5a8e] transition-colors disabled:opacity-50 flex-shrink-0"
                         >
                             <ShoppingBag size={16} />
                         </button>

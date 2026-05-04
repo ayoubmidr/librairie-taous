@@ -1,6 +1,7 @@
 import { useForm, Link } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 import { AuthUser } from '@/types';
+import { CheckCircle } from 'lucide-react';
 
 interface SettingsProps {
     user: AuthUser;
@@ -24,14 +25,14 @@ export default function Settings({ user }: SettingsProps) {
         <MainLayout title="Paramètres du compte">
             <div className="max-w-2xl mx-auto px-4 py-10">
                 <div className="flex items-center gap-3 mb-8">
-                    <Link href={route('account.index')} className="text-stone-400 hover:text-[#1a4731] text-sm">Mon compte</Link>
+                    <Link href={route('account.index')} className="text-stone-400 hover:text-[#1e3a5f] text-sm">Mon compte</Link>
                     <span className="text-stone-300">/</span>
-                    <h1 className="text-2xl font-serif font-bold text-[#0f2b1c]">Paramètres</h1>
+                    <h1 className="text-2xl font-serif font-bold text-[#0f2240]">Paramètres</h1>
                 </div>
 
                 {wasSuccessful && (
                     <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 text-green-700 text-sm font-medium">
-                        ✅ Vos informations ont été mises à jour.
+                        <CheckCircle size={16} className="inline mr-1" /> Vos informations ont été mises à jour.
                     </div>
                 )}
 
@@ -46,7 +47,7 @@ export default function Settings({ user }: SettingsProps) {
                                         type="text"
                                         value={data.name}
                                         onChange={e => setData('name', e.target.value)}
-                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                     />
                                     {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                                 </div>
@@ -56,7 +57,7 @@ export default function Settings({ user }: SettingsProps) {
                                         type="email"
                                         value={data.email}
                                         onChange={e => setData('email', e.target.value)}
-                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                     />
                                     {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                                 </div>
@@ -72,7 +73,7 @@ export default function Settings({ user }: SettingsProps) {
                                         type="password"
                                         value={data.current_password}
                                         onChange={e => setData('current_password', e.target.value)}
-                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                         placeholder="Laissez vide si vous ne changez pas"
                                     />
                                     {errors.current_password && <p className="text-red-500 text-xs mt-1">{errors.current_password}</p>}
@@ -83,7 +84,7 @@ export default function Settings({ user }: SettingsProps) {
                                         type="password"
                                         value={data.password}
                                         onChange={e => setData('password', e.target.value)}
-                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                         placeholder="Minimum 8 caractères"
                                     />
                                     {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
@@ -94,7 +95,7 @@ export default function Settings({ user }: SettingsProps) {
                                         type="password"
                                         value={data.password_confirmation}
                                         onChange={e => setData('password_confirmation', e.target.value)}
-                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                     />
                                 </div>
                             </div>
@@ -103,7 +104,7 @@ export default function Settings({ user }: SettingsProps) {
                         <button
                             type="submit"
                             disabled={processing}
-                            className="w-full bg-[#1a4731] text-white py-3.5 rounded-lg font-semibold hover:bg-[#2d7a52] transition-colors disabled:opacity-50"
+                            className="w-full bg-[#1e3a5f] text-white py-3.5 rounded-lg font-semibold hover:bg-[#2d5a8e] transition-colors disabled:opacity-50"
                         >
                             {processing ? 'Sauvegarde...' : 'Sauvegarder les modifications'}
                         </button>

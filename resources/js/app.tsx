@@ -20,7 +20,7 @@ createInertiaApp({
                     toastOptions={{
                         duration: 4000,
                         style: { fontFamily: 'Inter, sans-serif' },
-                        success: { iconTheme: { primary: '#1a4731', secondary: '#fff' } },
+                        success: { iconTheme: { primary: '#1e3a5f', secondary: '#fff' } },
                     }}
                 />
             </HelmetProvider>

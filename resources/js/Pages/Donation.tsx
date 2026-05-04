@@ -1,6 +1,6 @@
 import { useForm } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
-import { Heart } from 'lucide-react';
+import { Heart, Gift } from 'lucide-react';
 
 const AMOUNTS = [5, 10, 20, 50];
 
@@ -22,8 +22,8 @@ export default function Donation() {
             <div className="max-w-4xl mx-auto px-4 py-12">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <div className="text-5xl mb-4">📿</div>
-                    <h1 className="text-4xl font-serif font-bold text-[#0f2b1c] mb-4">Don Sadaqa</h1>
+                    <div className="flex justify-center mb-4"><Gift size={56} className="text-[#c9a84c]" /></div>
+                    <h1 className="text-4xl font-serif font-bold text-[#0f2240] mb-4">Don Sadaqa</h1>
                     <p className="text-stone-600 text-lg max-w-2xl mx-auto">
                         Offrez le cadeau de la connaissance. Pour chaque don reçu, nous offrons un livre islamique à quelqu'un dans le besoin.
                     </p>
@@ -31,7 +31,7 @@ export default function Donation() {
 
                 {/* Hadith */}
                 <div className="bg-[#fdf8f0] border border-[#c9a84c]/20 rounded-2xl p-8 mb-12 text-center">
-                    <p className="text-[#1a4731] text-lg font-semibold italic leading-relaxed">
+                    <p className="text-[#1e3a5f] text-lg font-semibold italic leading-relaxed">
                         "Lorsque le fils d'Adam meurt, ses actions s'arrêtent sauf pour trois choses : une sadaqa jariya, une connaissance utile, ou un enfant vertueux qui prie pour lui."
                     </p>
                     <p className="text-stone-500 mt-3 font-medium">— Rapporté par Muslim</p>
@@ -40,12 +40,12 @@ export default function Donation() {
                 {wasSuccessful ? (
                     <div className="bg-white rounded-2xl border border-green-200 p-12 text-center">
                         <div className="text-5xl mb-4">🤲</div>
-                        <h2 className="text-2xl font-serif font-bold text-[#0f2b1c] mb-3">Barak Allahu feek !</h2>
+                        <h2 className="text-2xl font-serif font-bold text-[#0f2240] mb-3">Barak Allahu feek !</h2>
                         <p className="text-stone-600">Votre don a été enregistré. Qu'Allah vous en récompense.</p>
                     </div>
                 ) : (
                     <div className="bg-white rounded-2xl border border-stone-100 p-8">
-                        <h2 className="text-2xl font-serif font-bold text-[#0f2b1c] mb-6">Faire un don</h2>
+                        <h2 className="text-2xl font-serif font-bold text-[#0f2240] mb-6">Faire un don</h2>
                         <form onSubmit={submit} className="space-y-6">
                             {/* Amount selection */}
                             <div>
@@ -56,7 +56,7 @@ export default function Donation() {
                                             key={amount}
                                             type="button"
                                             onClick={() => setData('amount', amount)}
-                                            className={`py-3 rounded-lg font-semibold text-sm transition-colors border-2 ${data.amount === amount ? 'border-[#1a4731] bg-[#1a4731] text-white' : 'border-stone-200 text-stone-600 hover:border-[#1a4731]'}`}
+                                            className={`py-3 rounded-lg font-semibold text-sm transition-colors border-2 ${data.amount === amount ? 'border-[#1e3a5f] bg-[#1e3a5f] text-white' : 'border-stone-200 text-stone-600 hover:border-[#1e3a5f]'}`}
                                         >
                                             {amount} €
                                         </button>
@@ -67,7 +67,7 @@ export default function Donation() {
                                     min="1"
                                     value={data.amount}
                                     onChange={e => setData('amount', parseFloat(e.target.value))}
-                                    className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                    className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                     placeholder="Ou entrez un montant personnalisé"
                                 />
                                 {errors.amount && <p className="text-red-500 text-xs mt-1">{errors.amount}</p>}
@@ -80,7 +80,7 @@ export default function Donation() {
                                         type="text"
                                         value={data.donor_name}
                                         onChange={e => setData('donor_name', e.target.value)}
-                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                         placeholder="Anonyme"
                                     />
                                 </div>
@@ -90,7 +90,7 @@ export default function Donation() {
                                         type="email"
                                         value={data.donor_email}
                                         onChange={e => setData('donor_email', e.target.value)}
-                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                         placeholder="votre@email.com"
                                     />
                                     {errors.donor_email && <p className="text-red-500 text-xs mt-1">{errors.donor_email}</p>}
@@ -103,7 +103,7 @@ export default function Donation() {
                                     value={data.message}
                                     onChange={e => setData('message', e.target.value)}
                                     rows={3}
-                                    className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731] resize-none"
+                                    className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f] resize-none"
                                     placeholder="Pour qui faites-vous ce don ? Un message pour le bénéficiaire ?"
                                 />
                             </div>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, router } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
-import { Trash2, Plus, Minus, ShoppingBag, Tag, ChevronRight, ShieldCheck, Truck } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, Tag, ChevronRight, ShieldCheck, Truck, AlertTriangle, PartyPopper } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { CartItem, CartSummary } from '@/types';
@@ -71,7 +71,7 @@ export default function Cart({ cart, summary }: CartProps) {
     return (
         <MainLayout title="Mon panier">
             <div className="max-w-7xl mx-auto px-4 py-8">
-                <h1 className="text-3xl font-serif font-bold text-[#0f2b1c] mb-8">
+                <h1 className="text-3xl font-serif font-bold text-[#0f2240] mb-8">
                     Mon panier ({cart.length} article{cart.length > 1 ? 's' : ''})
                 </h1>
 
@@ -81,7 +81,7 @@ export default function Cart({ cart, summary }: CartProps) {
                         {cart.some(item => item.is_preorder) && (
                             <div className="bg-orange-50 border border-orange-200 rounded-xl p-4">
                                 <p className="text-orange-700 font-medium text-sm">
-                                    ⚠️ Votre panier contient des articles en précommande. Ces articles seront expédiés séparément à leur date de disponibilité.
+                                    <AlertTriangle size={16} className="inline mr-1 align-text-bottom" /> Votre panier contient des articles en précommande. Ces articles seront expédiés séparément à leur date de disponibilité.
                                 </p>
                             </div>
                         )}
@@ -99,7 +99,7 @@ export default function Cart({ cart, summary }: CartProps) {
                                 <div className="flex-1 min-w-0">
                                     <div className="flex justify-between items-start gap-2">
                                         <div>
-                                            <Link href={route('products.show', item.product_slug)} className="font-semibold text-stone-800 hover:text-[#1a4731] transition-colors line-clamp-2">
+                                            <Link href={route('products.show', item.product_slug)} className="font-semibold text-stone-800 hover:text-[#1e3a5f] transition-colors line-clamp-2">
                                                 {item.product_name}
                                             </Link>
                                             {item.authors && <p className="text-stone-400 text-sm">{item.authors}</p>}
@@ -139,7 +139,7 @@ export default function Cart({ cart, summary }: CartProps) {
                                         </div>
 
                                         <div className="text-right">
-                                            <div className="font-bold text-[#1a4731]">{(item.price * item.quantity).toFixed(2)} €</div>
+                                            <div className="font-bold text-[#1e3a5f]">{(item.price * item.quantity).toFixed(2)} €</div>
                                             <div className="text-stone-400 text-xs">{item.price.toFixed(2)} € / unité</div>
                                         </div>
                                     </div>
@@ -147,7 +147,7 @@ export default function Cart({ cart, summary }: CartProps) {
                             </div>
                         ))}
 
-                        <Link href={route('shop.index')} className="inline-flex items-center gap-2 text-[#1a4731] font-medium text-sm hover:gap-3 transition-all">
+                        <Link href={route('shop.index')} className="inline-flex items-center gap-2 text-[#1e3a5f] font-medium text-sm hover:gap-3 transition-all">
                             ← Continuer mes achats
                         </Link>
                     </div>
@@ -165,9 +165,9 @@ export default function Cart({ cart, summary }: CartProps) {
                                     value={couponCode}
                                     onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                                     placeholder="Votre code"
-                                    className="flex-1 border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1a4731] uppercase"
+                                    className="flex-1 border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1e3a5f] uppercase"
                                 />
-                                <button type="submit" disabled={couponLoading || !couponCode} className="px-4 py-2 bg-[#1a4731] text-white rounded-lg text-sm font-semibold hover:bg-[#2d7a52] transition-colors disabled:opacity-50">
+                                <button type="submit" disabled={couponLoading || !couponCode} className="px-4 py-2 bg-[#1e3a5f] text-white rounded-lg text-sm font-semibold hover:bg-[#2d5a8e] transition-colors disabled:opacity-50">
                                     {couponLoading ? '...' : 'OK'}
                                 </button>
                             </form>
@@ -197,25 +197,25 @@ export default function Cart({ cart, summary }: CartProps) {
                                 <div className="flex justify-between text-stone-600">
                                     <span>Livraison</span>
                                     <span className={summary?.shipping === 0 ? 'text-green-600 font-medium' : ''}>
-                                        {summary?.shipping === 0 ? 'Gratuite 🎉' : summary?.shipping ? `${summary.shipping.toFixed(2)} €` : 'Calculé au checkout'}
+                                        {summary?.shipping === 0 ? <span className="flex items-center gap-1">Gratuite <PartyPopper size={14} /></span> : summary?.shipping ? `${summary.shipping.toFixed(2)} €` : 'Calculé au checkout'}
                                     </span>
                                 </div>
                                 <div className="border-t border-stone-100 pt-3 flex justify-between font-bold text-lg">
                                     <span>Total TTC</span>
-                                    <span className="text-[#1a4731]">{summary?.total?.toFixed(2)} €</span>
+                                    <span className="text-[#1e3a5f]">{summary?.total?.toFixed(2)} €</span>
                                 </div>
                             </div>
 
-                            <Link href={route('checkout.index')} className="w-full flex items-center justify-center gap-2 mt-6 bg-[#1a4731] text-white py-4 rounded-lg font-semibold hover:bg-[#2d7a52] transition-colors">
+                            <Link href={route('checkout.index')} className="w-full flex items-center justify-center gap-2 mt-6 bg-[#1e3a5f] text-white py-4 rounded-lg font-semibold hover:bg-[#2d5a8e] transition-colors">
                                 Passer commande <ChevronRight size={18} />
                             </Link>
 
                             <div className="mt-4 space-y-2">
                                 <div className="flex items-center gap-2 text-xs text-stone-400">
-                                    <ShieldCheck size={12} className="text-[#1a4731]" /> Paiement 100% sécurisé par Stripe
+                                    <ShieldCheck size={12} className="text-[#1e3a5f]" /> Paiement 100% sécurisé par Stripe
                                 </div>
                                 <div className="flex items-center gap-2 text-xs text-stone-400">
-                                    <Truck size={12} className="text-[#1a4731]" /> Livraison gratuite dès 50€
+                                    <Truck size={12} className="text-[#1e3a5f]" /> Livraison gratuite dès 50€
                                 </div>
                             </div>
                         </div>

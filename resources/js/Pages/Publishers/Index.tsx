@@ -16,7 +16,7 @@ export default function PublishersIndex({ publishers }: PublishersIndexProps) {
         <MainLayout title="Maisons d'édition islamiques">
             <div className="max-w-7xl mx-auto px-4 py-12">
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl font-serif font-bold text-[#0f2b1c] mb-4">Maisons d'édition</h1>
+                    <h1 className="text-4xl font-serif font-bold text-[#0f2240] mb-4">Maisons d'édition</h1>
                     <p className="text-stone-500 text-lg">Découvrez les éditeurs islamiques que nous proposons</p>
                 </div>
 
@@ -25,16 +25,16 @@ export default function PublishersIndex({ publishers }: PublishersIndexProps) {
                         <Link
                             key={publisher.id}
                             href={route('publishers.show', publisher.slug)}
-                            className="group bg-white rounded-xl border border-stone-100 p-6 text-center hover:border-[#1a4731] hover:shadow-md transition-all"
+                            className="group bg-white rounded-xl border border-stone-100 p-6 text-center hover:border-[#1e3a5f] hover:shadow-md transition-all"
                         >
                             {publisher.logo_url ? (
                                 <img src={publisher.logo_url} alt={publisher.name} className="w-16 h-16 object-contain mx-auto mb-4 rounded-lg" />
                             ) : (
                                 <div className="w-16 h-16 bg-[#f5efe0] rounded-xl flex items-center justify-center mx-auto mb-4">
-                                    <BookOpen size={28} className="text-[#1a4731]" />
+                                    <BookOpen size={28} className="text-[#1e3a5f]" />
                                 </div>
                             )}
-                            <h3 className="font-semibold text-stone-800 text-sm group-hover:text-[#1a4731] transition-colors leading-tight">
+                            <h3 className="font-semibold text-stone-800 text-sm group-hover:text-[#1e3a5f] transition-colors leading-tight">
                                 {publisher.name}
                             </h3>
                             <p className="text-stone-400 text-xs mt-1">{publisher.products_count} livre{publisher.products_count > 1 ? 's' : ''}</p>

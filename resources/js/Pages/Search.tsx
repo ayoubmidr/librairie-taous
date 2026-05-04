@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { router } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 import ProductCard from '@/Components/ProductCard';
-import { Search as SearchIcon } from 'lucide-react';
+import { Search as SearchIcon, BookOpen } from 'lucide-react';
 import { Product, PaginatedData } from '@/types';
 
 interface SearchProps {
@@ -31,10 +31,10 @@ export default function Search({ products, query }: SearchProps) {
                             value={searchQuery}
                             onChange={e => setSearchQuery(e.target.value)}
                             placeholder="Rechercher un livre, auteur, éditeur..."
-                            className="w-full pl-5 pr-14 py-4 border-2 border-stone-200 rounded-xl text-base focus:outline-none focus:border-[#1a4731] transition-colors"
+                            className="w-full pl-5 pr-14 py-4 border-2 border-stone-200 rounded-xl text-base focus:outline-none focus:border-[#1e3a5f] transition-colors"
                             autoFocus
                         />
-                        <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 bg-[#1a4731] text-white rounded-lg flex items-center justify-center hover:bg-[#2d7a52] transition-colors">
+                        <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 bg-[#1e3a5f] text-white rounded-lg flex items-center justify-center hover:bg-[#2d5a8e] transition-colors">
                             <SearchIcon size={18} />
                         </button>
                     </form>
@@ -42,7 +42,7 @@ export default function Search({ products, query }: SearchProps) {
 
                 {query && (
                     <div className="mb-6">
-                        <h1 className="text-2xl font-serif font-bold text-[#0f2b1c]">
+                        <h1 className="text-2xl font-serif font-bold text-[#0f2240]">
                             Résultats pour "{query}"
                         </h1>
                         <p className="text-stone-500 mt-1">{products?.total || 0} résultat{(products?.total || 0) > 1 ? 's' : ''}</p>
@@ -57,13 +57,13 @@ export default function Search({ products, query }: SearchProps) {
                     </div>
                 ) : query ? (
                     <div className="text-center py-20">
-                        <div className="text-6xl mb-4">🔍</div>
+                        <div className="flex justify-center mb-4"><SearchIcon size={64} className="text-stone-300" /></div>
                         <h2 className="text-xl font-semibold text-stone-700 mb-2">Aucun résultat</h2>
                         <p className="text-stone-500">Essayez d'autres mots-clés ou parcourez notre catalogue</p>
                     </div>
                 ) : (
                     <div className="text-center py-20">
-                        <div className="text-6xl mb-4">📚</div>
+                        <div className="flex justify-center mb-4"><BookOpen size={64} className="text-stone-300" /></div>
                         <p className="text-stone-500">Tapez un mot-clé pour rechercher dans notre catalogue</p>
                     </div>
                 )}

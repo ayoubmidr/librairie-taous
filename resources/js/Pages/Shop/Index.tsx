@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, router } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 import ProductCard from '@/Components/ProductCard';
-import { ChevronDown, X, SlidersHorizontal } from 'lucide-react';
+import { ChevronDown, X, SlidersHorizontal, BookOpen } from 'lucide-react';
 import { Category, PaginatedData, Product } from '@/types';
 
 interface ActiveFilters {
@@ -40,7 +40,7 @@ function FilterSidebar({ activeFilters, onFilterChange, categories }: FilterSide
                                 type="checkbox"
                                 checked={activeFilters.price === range.value}
                                 onChange={() => onFilterChange('price', activeFilters.price === range.value ? null : range.value)}
-                                className="rounded border-stone-300 text-[#1a4731] focus:ring-[#1a4731]"
+                                className="rounded border-stone-300 text-[#1e3a5f] focus:ring-[#1e3a5f]"
                             />
                             <span className="text-sm text-stone-600">{range.label}</span>
                         </label>
@@ -59,7 +59,7 @@ function FilterSidebar({ activeFilters, onFilterChange, categories }: FilterSide
                                     type="checkbox"
                                     checked={activeFilters.category === cat.slug}
                                     onChange={() => onFilterChange('category', activeFilters.category === cat.slug ? null : cat.slug)}
-                                    className="rounded border-stone-300 text-[#1a4731] focus:ring-[#1a4731]"
+                                    className="rounded border-stone-300 text-[#1e3a5f] focus:ring-[#1e3a5f]"
                                 />
                                 <span className="text-sm text-stone-600">{cat.name}</span>
                             </label>
@@ -81,7 +81,7 @@ function FilterSidebar({ activeFilters, onFilterChange, categories }: FilterSide
                                 type="checkbox"
                                 checked={activeFilters.availability === opt.value}
                                 onChange={() => onFilterChange('availability', activeFilters.availability === opt.value ? null : opt.value)}
-                                className="rounded border-stone-300 text-[#1a4731] focus:ring-[#1a4731]"
+                                className="rounded border-stone-300 text-[#1e3a5f] focus:ring-[#1e3a5f]"
                             />
                             <span className="text-sm text-stone-600">{opt.label}</span>
                         </label>
@@ -103,7 +103,7 @@ function FilterSidebar({ activeFilters, onFilterChange, categories }: FilterSide
                                 type="checkbox"
                                 checked={activeFilters.language === lang.value}
                                 onChange={() => onFilterChange('language', activeFilters.language === lang.value ? null : lang.value)}
-                                className="rounded border-stone-300 text-[#1a4731] focus:ring-[#1a4731]"
+                                className="rounded border-stone-300 text-[#1e3a5f] focus:ring-[#1e3a5f]"
                             />
                             <span className="text-sm text-stone-600">{lang.label}</span>
                         </label>
@@ -150,7 +150,7 @@ export default function ShopIndex({ products, categories, filters, title }: Shop
             <div className="max-w-7xl mx-auto px-4 py-8">
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-2 text-sm text-stone-500 mb-6">
-                    <Link href={route('home')} className="hover:text-[#1a4731]">Accueil</Link>
+                    <Link href={route('home')} className="hover:text-[#1e3a5f]">Accueil</Link>
                     <span>/</span>
                     <span className="text-stone-800">{title || 'Boutique'}</span>
                 </nav>
@@ -158,7 +158,7 @@ export default function ShopIndex({ products, categories, filters, title }: Shop
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8">
                     <div>
-                        <h1 className="text-3xl font-serif font-bold text-[#0f2b1c]">{title || 'Tous les livres'}</h1>
+                        <h1 className="text-3xl font-serif font-bold text-[#0f2240]">{title || 'Tous les livres'}</h1>
                         <p className="text-stone-500 mt-1">{products?.total || 0} résultats</p>
                     </div>
 
@@ -168,13 +168,13 @@ export default function ShopIndex({ products, categories, filters, title }: Shop
                             className="lg:hidden flex items-center gap-2 px-4 py-2 border border-stone-200 rounded-lg text-sm font-medium"
                         >
                             <SlidersHorizontal size={16} />
-                            Filtres {activeFilterCount > 0 && <span className="bg-[#1a4731] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">{activeFilterCount}</span>}
+                            Filtres {activeFilterCount > 0 && <span className="bg-[#1e3a5f] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">{activeFilterCount}</span>}
                         </button>
 
                         <select
                             value={sortBy}
                             onChange={(e) => handleSort(e.target.value)}
-                            className="border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1a4731]"
+                            className="border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1e3a5f]"
                         >
                             <option value="newest">Nouveautés</option>
                             <option value="bestselling">Meilleures ventes</option>
@@ -224,7 +224,7 @@ export default function ShopIndex({ products, categories, filters, title }: Shop
                                                 href={`${window.location.pathname}?page=${page}`}
                                                 className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors ${
                                                     page === products.current_page
-                                                        ? 'bg-[#1a4731] text-white'
+                                                        ? 'bg-[#1e3a5f] text-white'
                                                         : 'border border-stone-200 text-stone-600 hover:bg-stone-50'
                                                 }`}
                                             >
@@ -236,7 +236,7 @@ export default function ShopIndex({ products, categories, filters, title }: Shop
                             </>
                         ) : (
                             <div className="text-center py-20">
-                                <div className="text-6xl mb-4">📚</div>
+                                <div className="flex justify-center mb-4"><BookOpen size={64} className="text-stone-300" /></div>
                                 <h3 className="text-xl font-semibold text-stone-700 mb-2">Aucun produit trouvé</h3>
                                 <p className="text-stone-500 mb-6">Essayez de modifier vos filtres</p>
                                 <button

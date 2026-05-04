@@ -56,12 +56,12 @@ export default function ProductShow({ product, relatedProducts, reviews }: Produ
             <div className="max-w-7xl mx-auto px-4 py-8">
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-2 text-sm text-stone-500 mb-8">
-                    <Link href={route('home')} className="hover:text-[#1a4731]">Accueil</Link>
+                    <Link href={route('home')} className="hover:text-[#1e3a5f]">Accueil</Link>
                     <span>/</span>
-                    <Link href={route('shop.index')} className="hover:text-[#1a4731]">Boutique</Link>
+                    <Link href={route('shop.index')} className="hover:text-[#1e3a5f]">Boutique</Link>
                     {product.category && <>
                         <span>/</span>
-                        <Link href={route('shop.category', product.category.slug)} className="hover:text-[#1a4731]">{product.category.name}</Link>
+                        <Link href={route('shop.category', product.category.slug)} className="hover:text-[#1e3a5f]">{product.category.name}</Link>
                     </>}
                     <span>/</span>
                     <span className="text-stone-800 truncate max-w-40">{product.name}</span>
@@ -84,7 +84,7 @@ export default function ProductShow({ product, relatedProducts, reviews }: Produ
                                     <button
                                         key={i}
                                         onClick={() => setActiveImage(i)}
-                                        className={`flex-shrink-0 w-16 h-20 rounded-lg overflow-hidden border-2 transition-colors ${i === activeImage ? 'border-[#1a4731]' : 'border-stone-200'}`}
+                                        className={`flex-shrink-0 w-16 h-20 rounded-lg overflow-hidden border-2 transition-colors ${i === activeImage ? 'border-[#1e3a5f]' : 'border-stone-200'}`}
                                     >
                                         <img src={img.url} alt="" className="w-full h-full object-cover" />
                                     </button>
@@ -97,18 +97,18 @@ export default function ProductShow({ product, relatedProducts, reviews }: Produ
                     <div className="lg:col-span-3">
                         {/* Badges */}
                         <div className="flex flex-wrap gap-2 mb-3">
-                            {product.is_new && <span className="bg-[#1a4731] text-white text-xs font-bold px-3 py-1 rounded-full">Nouveauté</span>}
+                            {product.is_new && <span className="bg-[#1e3a5f] text-white text-xs font-bold px-3 py-1 rounded-full">Nouveauté</span>}
                             {product.is_bestseller && <span className="bg-[#c9a84c] text-white text-xs font-bold px-3 py-1 rounded-full">Bestseller</span>}
                             {product.type === 'preorder' && <span className="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">Précommande</span>}
                             {product.discount_percent && <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">-{product.discount_percent}%</span>}
                         </div>
 
-                        <h1 className="text-2xl md:text-3xl font-serif font-bold text-[#0f2b1c] mb-2 leading-tight">
+                        <h1 className="text-2xl md:text-3xl font-serif font-bold text-[#0f2240] mb-2 leading-tight">
                             {product.name}
                         </h1>
 
                         {product.authors && product.authors.length > 0 && (
-                            <p className="text-[#1a4731] font-medium mb-3">
+                            <p className="text-[#1e3a5f] font-medium mb-3">
                                 Par {product.authors.map(a => a.name).join(', ')}
                             </p>
                         )}
@@ -133,13 +133,13 @@ export default function ProductShow({ product, relatedProducts, reviews }: Produ
                         {/* Price */}
                         <div className="mb-6 p-4 bg-[#fdf8f0] rounded-xl border border-[#c9a84c]/20">
                             <div className="flex items-baseline gap-3">
-                                <span className="text-3xl font-bold text-[#1a4731]">{displayPrice} €</span>
+                                <span className="text-3xl font-bold text-[#1e3a5f]">{displayPrice} €</span>
                                 {product.compare_price && parseFloat(String(product.compare_price)) > parseFloat(String(product.price)) && (
                                     <span className="text-xl text-stone-400 line-through">{parseFloat(String(product.compare_price)).toFixed(2)} €</span>
                                 )}
                             </div>
                             {bulkPrice && (
-                                <p className="text-sm text-[#1a4731] mt-1 font-medium">
+                                <p className="text-sm text-[#1e3a5f] mt-1 font-medium">
                                     ✓ Réduction volume appliquée : -{bulkPrice.discount_percent}%
                                 </p>
                             )}
@@ -149,7 +149,7 @@ export default function ProductShow({ product, relatedProducts, reviews }: Produ
                                     <p className="text-xs font-semibold text-stone-600 mb-2">Réductions volume (Éditions Taous) :</p>
                                     <div className="flex flex-wrap gap-2">
                                         {product.bulk_discounts.map((d, i) => (
-                                            <span key={i} className={`text-xs px-2 py-1 rounded-full border ${quantity >= d.min_quantity ? 'bg-[#1a4731] text-white border-[#1a4731]' : 'border-stone-200 text-stone-600'}`}>
+                                            <span key={i} className={`text-xs px-2 py-1 rounded-full border ${quantity >= d.min_quantity ? 'bg-[#1e3a5f] text-white border-[#1e3a5f]' : 'border-stone-200 text-stone-600'}`}>
                                                 {d.min_quantity}+ ex. → -{d.discount_percent}%
                                             </span>
                                         ))}
@@ -201,7 +201,7 @@ export default function ProductShow({ product, relatedProducts, reviews }: Produ
                                 <button
                                     onClick={handleAddToCart}
                                     disabled={loading}
-                                    className="flex-1 flex items-center justify-center gap-2 bg-[#1a4731] text-white py-3.5 px-6 rounded-lg font-semibold hover:bg-[#2d7a52] transition-colors disabled:opacity-50"
+                                    className="flex-1 flex items-center justify-center gap-2 bg-[#1e3a5f] text-white py-3.5 px-6 rounded-lg font-semibold hover:bg-[#2d5a8e] transition-colors disabled:opacity-50"
                                 >
                                     <ShoppingBag size={18} />
                                     {loading ? 'Ajout...' : `Ajouter au panier — ${(parseFloat(displayPrice) * quantity).toFixed(2)} €`}
@@ -220,7 +220,7 @@ export default function ProductShow({ product, relatedProducts, reviews }: Produ
                                 { icon: <RefreshCcw size={16} />, text: 'Retours 14 jours' },
                             ].map((t, i) => (
                                 <div key={i} className="flex items-center gap-2 text-xs text-stone-500 bg-stone-50 rounded-lg p-2.5">
-                                    <span className="text-[#1a4731]">{t.icon}</span>
+                                    <span className="text-[#1e3a5f]">{t.icon}</span>
                                     {t.text}
                                 </div>
                             ))}
@@ -241,7 +241,7 @@ export default function ProductShow({ product, relatedProducts, reviews }: Produ
                                 onClick={() => setActiveTab(tab.key)}
                                 className={`px-6 py-4 text-sm font-semibold border-b-2 transition-colors whitespace-nowrap ${
                                     activeTab === tab.key
-                                        ? 'border-[#1a4731] text-[#1a4731]'
+                                        ? 'border-[#1e3a5f] text-[#1e3a5f]'
                                         : 'border-transparent text-stone-500 hover:text-stone-700'
                                 }`}
                             >
@@ -281,7 +281,7 @@ export default function ProductShow({ product, relatedProducts, reviews }: Produ
                                     {reviews.map((review) => (
                                         <div key={review.id} className="border-b border-stone-100 pb-6">
                                             <div className="flex items-start gap-4">
-                                                <div className="w-10 h-10 bg-[#1a4731] rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
+                                                <div className="w-10 h-10 bg-[#1e3a5f] rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
                                                     {review.author_name[0]}
                                                 </div>
                                                 <div className="flex-1">
@@ -297,7 +297,7 @@ export default function ProductShow({ product, relatedProducts, reviews }: Produ
                                                     {review.title && <p className="font-medium text-stone-700 text-sm mb-1">{review.title}</p>}
                                                     <p className="text-stone-600 text-sm">{review.content}</p>
                                                     {review.is_verified_purchase && (
-                                                        <span className="inline-flex items-center gap-1 mt-2 text-xs text-[#1a4731]">
+                                                        <span className="inline-flex items-center gap-1 mt-2 text-xs text-[#1e3a5f]">
                                                             <Check size={10} /> Achat vérifié
                                                         </span>
                                                     )}
@@ -316,7 +316,7 @@ export default function ProductShow({ product, relatedProducts, reviews }: Produ
                 {/* Related Products */}
                 {relatedProducts?.length > 0 && (
                     <section>
-                        <h2 className="text-2xl font-serif font-bold text-[#0f2b1c] mb-6">Vous pourriez aussi aimer</h2>
+                        <h2 className="text-2xl font-serif font-bold text-[#0f2240] mb-6">Vous pourriez aussi aimer</h2>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                             {relatedProducts.map((p) => <ProductCard key={p.id} product={p} />)}
                         </div>

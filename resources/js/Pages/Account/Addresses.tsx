@@ -43,13 +43,13 @@ export default function Addresses({ addresses }: AddressesProps) {
             <div className="max-w-3xl mx-auto px-4 py-10">
                 <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center gap-3">
-                        <Link href={route('account.index')} className="text-stone-400 hover:text-[#1a4731] text-sm">Mon compte</Link>
+                        <Link href={route('account.index')} className="text-stone-400 hover:text-[#1e3a5f] text-sm">Mon compte</Link>
                         <span className="text-stone-300">/</span>
-                        <h1 className="text-2xl font-serif font-bold text-[#0f2b1c]">Mes adresses</h1>
+                        <h1 className="text-2xl font-serif font-bold text-[#0f2240]">Mes adresses</h1>
                     </div>
                     <button
                         onClick={() => setShowForm(!showForm)}
-                        className="flex items-center gap-2 bg-[#1a4731] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#2d7a52] transition-colors"
+                        className="flex items-center gap-2 bg-[#1e3a5f] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#2d5a8e] transition-colors"
                     >
                         <Plus size={16} /> Ajouter
                     </button>
@@ -73,12 +73,12 @@ export default function Addresses({ addresses }: AddressesProps) {
                                         type="text"
                                         value={(form as Record<string, string | undefined>)[field.key] || ''}
                                         onChange={e => setForm({ ...form, [field.key]: e.target.value })}
-                                        className="w-full border border-stone-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#1a4731]"
+                                        className="w-full border border-stone-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                     />
                                 </div>
                             ))}
                             <div className="col-span-2 flex gap-3 pt-2">
-                                <button type="submit" className="flex-1 bg-[#1a4731] text-white py-3 rounded-lg font-semibold hover:bg-[#2d7a52] transition-colors text-sm">
+                                <button type="submit" className="flex-1 bg-[#1e3a5f] text-white py-3 rounded-lg font-semibold hover:bg-[#2d5a8e] transition-colors text-sm">
                                     Sauvegarder
                                 </button>
                                 <button type="button" onClick={() => setShowForm(false)} className="flex-1 border border-stone-200 text-stone-600 py-3 rounded-lg font-semibold text-sm">
@@ -94,7 +94,7 @@ export default function Addresses({ addresses }: AddressesProps) {
                         {addresses.map(address => (
                             <div key={address.id} className="bg-white rounded-xl border border-stone-100 p-5 flex items-start gap-4">
                                 <div className="w-10 h-10 bg-[#f5efe0] rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <MapPin size={18} className="text-[#1a4731]" />
+                                    <MapPin size={18} className="text-[#1e3a5f]" />
                                 </div>
                                 <div className="flex-1">
                                     <p className="font-semibold text-stone-800">{address.first_name} {address.last_name}</p>

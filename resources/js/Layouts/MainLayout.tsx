@@ -1,6 +1,6 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { ShoppingBag, Search, Menu, X, ChevronDown, Heart, User, Phone, Mail } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, ChevronDown, Heart, User, Phone, Mail, Truck } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { PageProps, Category, AuthUser } from '@/types';
 
@@ -53,7 +53,7 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
     return (
         <>
             {/* Top Bar */}
-            <div className="bg-[#1a4731] text-white py-2 text-sm hidden md:block">
+            <div className="bg-[#1e3a5f] text-white py-2 text-sm hidden md:block">
                 <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
                     <div className="flex items-center gap-6 text-stone-200 text-xs">
                         <span className="flex items-center gap-1">
@@ -62,7 +62,7 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
                         <span className="flex items-center gap-1">
                             <Mail size={12} /> contact@librairietaous.com
                         </span>
-                        <span>🚚 Livraison gratuite dès 50€ en France</span>
+                        <span className="flex items-center gap-1"><Truck size={12} /> Livraison gratuite dès 50€ en France</span>
                     </div>
                     <div className="flex items-center gap-4 text-xs">
                         {user ? (
@@ -85,11 +85,11 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
                     <div className="flex items-center justify-between h-16 md:h-20">
                         {/* Logo */}
                         <Link href={route('home')} className="flex items-center gap-3 flex-shrink-0">
-                            <div className="w-10 h-10 bg-[#1a4731] rounded-lg flex items-center justify-center">
+                            <div className="w-10 h-10 bg-[#1e3a5f] rounded-lg flex items-center justify-center">
                                 <span className="text-white font-bold text-lg font-serif">T</span>
                             </div>
                             <div className="hidden sm:block">
-                                <div className="font-serif text-xl font-bold text-[#1a4731] leading-tight">Librairie Taous</div>
+                                <div className="font-serif text-xl font-bold text-[#1e3a5f] leading-tight">Librairie Taous</div>
                                 <div className="text-xs text-[#c9a84c] font-medium tracking-wider">ÉDITIONS ISLAMIQUES</div>
                             </div>
                         </Link>
@@ -102,9 +102,9 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="Rechercher un livre, auteur, éditeur..."
-                                    className="w-full pl-4 pr-12 py-2.5 border-2 border-stone-200 rounded-lg text-sm focus:outline-none focus:border-[#1a4731] transition-colors"
+                                    className="w-full pl-4 pr-12 py-2.5 border-2 border-stone-200 rounded-lg text-sm focus:outline-none focus:border-[#1e3a5f] transition-colors"
                                 />
-                                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-[#1a4731] transition-colors">
+                                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-[#1e3a5f] transition-colors">
                                     <Search size={18} />
                                 </button>
                             </div>
@@ -112,21 +112,21 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
 
                         {/* Icons */}
                         <div className="flex items-center gap-3">
-                            <button onClick={() => setSearchOpen(!searchOpen)} className="md:hidden p-2 text-stone-600 hover:text-[#1a4731]">
+                            <button onClick={() => setSearchOpen(!searchOpen)} className="md:hidden p-2 text-stone-600 hover:text-[#1e3a5f]">
                                 <Search size={20} />
                             </button>
                             {user && (
-                                <Link href={route('account.wishlist')} className="hidden sm:flex p-2 text-stone-600 hover:text-[#1a4731] transition-colors">
+                                <Link href={route('account.wishlist')} className="hidden sm:flex p-2 text-stone-600 hover:text-[#1e3a5f] transition-colors">
                                     <Heart size={20} />
                                 </Link>
                             )}
-                            <Link href={route('account.index')} className="hidden sm:flex p-2 text-stone-600 hover:text-[#1a4731] transition-colors">
+                            <Link href={route('account.index')} className="hidden sm:flex p-2 text-stone-600 hover:text-[#1e3a5f] transition-colors">
                                 <User size={20} />
                             </Link>
-                            <Link href={route('cart.index')} className="relative p-2 text-stone-600 hover:text-[#1a4731] transition-colors">
+                            <Link href={route('cart.index')} className="relative p-2 text-stone-600 hover:text-[#1e3a5f] transition-colors">
                                 <ShoppingBag size={22} />
                                 {cartCount > 0 && (
-                                    <span className="absolute -top-0.5 -right-0.5 bg-[#1a4731] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                                    <span className="absolute -top-0.5 -right-0.5 bg-[#1e3a5f] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
                                         {cartCount > 99 ? '99+' : cartCount}
                                     </span>
                                 )}
@@ -146,7 +146,7 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="Rechercher..."
-                                    className="w-full pl-4 pr-12 py-2.5 border-2 border-stone-200 rounded-lg text-sm focus:outline-none focus:border-[#1a4731]"
+                                    className="w-full pl-4 pr-12 py-2.5 border-2 border-stone-200 rounded-lg text-sm focus:outline-none focus:border-[#1e3a5f]"
                                     autoFocus
                                 />
                                 <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400">
@@ -165,7 +165,7 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
                                 <li key={link.label} className="relative group">
                                     {link.hasDropdown ? (
                                         <>
-                                            <button className="flex items-center gap-1 px-3 py-3.5 text-sm font-medium text-stone-700 hover:text-[#1a4731] hover:bg-stone-50 transition-colors rounded">
+                                            <button className="flex items-center gap-1 px-3 py-3.5 text-sm font-medium text-stone-700 hover:text-[#1e3a5f] hover:bg-stone-50 transition-colors rounded">
                                                 {link.label} <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />
                                             </button>
                                             <div className="absolute top-full left-0 bg-white shadow-xl border border-stone-100 rounded-lg min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -174,13 +174,13 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
                                                         <Link
                                                             key={cat.id}
                                                             href={route('shop.category', cat.slug)}
-                                                            className="block px-3 py-2 text-sm text-stone-700 hover:bg-[#1a4731] hover:text-white rounded-md transition-colors"
+                                                            className="block px-3 py-2 text-sm text-stone-700 hover:bg-[#1e3a5f] hover:text-white rounded-md transition-colors"
                                                         >
                                                             {cat.name}
                                                         </Link>
                                                     ))}
                                                     <div className="border-t border-stone-100 mt-2 pt-2">
-                                                        <Link href={route('shop.index')} className="block px-3 py-2 text-sm font-semibold text-[#1a4731] hover:bg-stone-50 rounded-md">
+                                                        <Link href={route('shop.index')} className="block px-3 py-2 text-sm font-semibold text-[#1e3a5f] hover:bg-stone-50 rounded-md">
                                                             Voir tous les livres →
                                                         </Link>
                                                     </div>
@@ -190,7 +190,7 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
                                     ) : (
                                         <Link
                                             href={link.href}
-                                            className="block px-3 py-3.5 text-sm font-medium text-stone-700 hover:text-[#1a4731] hover:bg-stone-50 transition-colors rounded"
+                                            className="block px-3 py-3.5 text-sm font-medium text-stone-700 hover:text-[#1e3a5f] hover:bg-stone-50 transition-colors rounded"
                                         >
                                             {link.label}
                                         </Link>
@@ -209,7 +209,7 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
                                 <Link
                                     key={link.label}
                                     href={link.hasDropdown ? route('shop.index') : link.href}
-                                    className="block px-4 py-3 text-stone-700 font-medium hover:bg-stone-50 hover:text-[#1a4731] rounded-lg transition-colors"
+                                    className="block px-4 py-3 text-stone-700 font-medium hover:bg-stone-50 hover:text-[#1e3a5f] rounded-lg transition-colors"
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {link.label}
@@ -220,7 +220,7 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
                                     <Link href={route('login')} className="block px-4 py-3 text-stone-700 font-medium hover:bg-stone-50 rounded-lg">
                                         Connexion
                                     </Link>
-                                    <Link href={route('register')} className="block px-4 py-3 bg-[#1a4731] text-white font-medium rounded-lg text-center">
+                                    <Link href={route('register')} className="block px-4 py-3 bg-[#1e3a5f] text-white font-medium rounded-lg text-center">
                                         Inscription
                                     </Link>
                                 </div>
@@ -239,9 +239,9 @@ function Footer() {
     };
 
     return (
-        <footer className="bg-[#0f2b1c] text-stone-300 mt-16">
+        <footer className="bg-[#0f2240] text-stone-300 mt-16">
             {/* Newsletter */}
-            <div className="bg-[#1a4731] py-10">
+            <div className="bg-[#1e3a5f] py-10">
                 <div className="max-w-7xl mx-auto px-4 text-center">
                     <h3 className="text-white text-2xl font-serif font-bold mb-2">Restez informé de nos nouveautés</h3>
                     <p className="text-stone-300 mb-6 text-sm">Recevez nos nouvelles publications, promotions et actualités islamiques</p>

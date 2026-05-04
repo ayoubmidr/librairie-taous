@@ -56,11 +56,11 @@ export default function AccountIndex({ user, recentOrders, ordersCount, wishlist
             <div className="max-w-5xl mx-auto px-4 py-10">
                 {/* Header */}
                 <div className="flex items-center gap-4 mb-8">
-                    <div className="w-16 h-16 bg-[#1a4731] rounded-2xl flex items-center justify-center text-white text-2xl font-serif font-bold">
+                    <div className="w-16 h-16 bg-[#1e3a5f] rounded-2xl flex items-center justify-center text-white text-2xl font-serif font-bold">
                         {user.name[0]}
                     </div>
                     <div>
-                        <h1 className="text-2xl font-serif font-bold text-[#0f2b1c]">{user.name}</h1>
+                        <h1 className="text-2xl font-serif font-bold text-[#0f2240]">{user.name}</h1>
                         <p className="text-stone-500">{user.email}</p>
                         {user.role === 'reseller' && user.reseller_status === 'approved' && (
                             <span className="inline-block mt-1 text-xs bg-[#c9a84c] text-white px-2 py-0.5 rounded-full font-semibold">
@@ -73,13 +73,13 @@ export default function AccountIndex({ user, recentOrders, ordersCount, wishlist
                 {/* Quick Nav */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
                     {menuItems.map((item) => (
-                        <Link key={item.label} href={item.href} className="bg-white rounded-xl border border-stone-100 p-5 hover:border-[#1a4731] hover:shadow-sm transition-all group">
+                        <Link key={item.label} href={item.href} className="bg-white rounded-xl border border-stone-100 p-5 hover:border-[#1e3a5f] hover:shadow-sm transition-all group">
                             <div className="flex items-center justify-between mb-3">
-                                <div className="w-10 h-10 bg-[#f5efe0] rounded-lg flex items-center justify-center text-[#1a4731] group-hover:bg-[#1a4731] group-hover:text-white transition-colors">
+                                <div className="w-10 h-10 bg-[#f5efe0] rounded-lg flex items-center justify-center text-[#1e3a5f] group-hover:bg-[#1e3a5f] group-hover:text-white transition-colors">
                                     {item.icon}
                                 </div>
                                 {item.count !== undefined && (
-                                    <span className="text-2xl font-bold text-[#1a4731]">{item.count}</span>
+                                    <span className="text-2xl font-bold text-[#1e3a5f]">{item.count}</span>
                                 )}
                             </div>
                             <p className="font-medium text-stone-700 text-sm">{item.label}</p>
@@ -91,7 +91,7 @@ export default function AccountIndex({ user, recentOrders, ordersCount, wishlist
                 <div>
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="text-lg font-serif font-semibold text-stone-800">Dernières commandes</h2>
-                        <Link href={route('account.orders')} className="text-sm text-[#1a4731] hover:underline flex items-center gap-1">
+                        <Link href={route('account.orders')} className="text-sm text-[#1e3a5f] hover:underline flex items-center gap-1">
                             Voir tout <ChevronRight size={14} />
                         </Link>
                     </div>
@@ -105,7 +105,7 @@ export default function AccountIndex({ user, recentOrders, ordersCount, wishlist
                                     className="flex items-center gap-4 bg-white rounded-xl border border-stone-100 p-4 hover:border-stone-200 hover:shadow-sm transition-all"
                                 >
                                     <div className="w-10 h-10 bg-[#f5efe0] rounded-lg flex items-center justify-center flex-shrink-0">
-                                        <ShoppingBag size={18} className="text-[#1a4731]" />
+                                        <ShoppingBag size={18} className="text-[#1e3a5f]" />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2 mb-0.5">
@@ -117,7 +117,7 @@ export default function AccountIndex({ user, recentOrders, ordersCount, wishlist
                                         </p>
                                     </div>
                                     <div className="text-right flex-shrink-0">
-                                        <p className="font-bold text-[#1a4731]">{parseFloat(String(order.total)).toFixed(2)} €</p>
+                                        <p className="font-bold text-[#1e3a5f]">{parseFloat(String(order.total)).toFixed(2)} €</p>
                                     </div>
                                     <ChevronRight size={16} className="text-stone-300" />
                                 </Link>

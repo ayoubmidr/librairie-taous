@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 import ProductCard from '@/Components/ProductCard';
-import { ChevronRight, ShieldCheck, Truck, RefreshCcw, Headphones, Star, BookOpen, Award, Users } from 'lucide-react';
+import { ChevronRight, ShieldCheck, Truck, RefreshCcw, Headphones, Star, BookOpen, Award, Users, Scale, BookMarked, GraduationCap, Heart, Smile, Home as HomeIcon, Gem, Languages, User, Gift } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
@@ -23,14 +23,14 @@ function HeroSection({ banners }: { banners: Banner[] }) {
         {
             title: 'La Science Islamique à Portée de Main',
             subtitle: 'Découvrez notre collection exclusive de livres islamiques en français',
-            bg: 'from-[#0f2b1c] to-[#1a4731]',
+            bg: 'from-[#0f2240] to-[#1e3a5f]',
             cta: 'Découvrir la boutique',
             cta2: 'Nos nouveautés',
         },
         {
             title: 'Éditions Taous — Nos Propres Publications',
             subtitle: 'Des ouvrages islamiques de référence, rédigés et édités avec soin',
-            bg: 'from-[#1a2e4a] to-[#1a4731]',
+            bg: 'from-[#1a2e4a] to-[#1e3a5f]',
             cta: 'Éditions Taous',
             cta2: 'Achats en gros',
         },
@@ -96,10 +96,10 @@ function HeroSection({ banners }: { banners: Banner[] }) {
 
 function TrustBar() {
     const items: { icon: ReactNode; title: string; desc: string }[] = [
-        { icon: <Truck className="text-[#1a4731]" size={24} />, title: 'Livraison rapide', desc: 'France, Belgique, Europe' },
-        { icon: <ShieldCheck className="text-[#1a4731]" size={24} />, title: 'Paiement sécurisé', desc: 'Stripe — Visa / Mastercard' },
-        { icon: <RefreshCcw className="text-[#1a4731]" size={24} />, title: 'Retours faciles', desc: "14 jours pour changer d'avis" },
-        { icon: <Headphones className="text-[#1a4731]" size={24} />, title: 'Service client', desc: 'Réponse sous 24h' },
+        { icon: <Truck className="text-[#1e3a5f]" size={24} />, title: 'Livraison rapide', desc: 'France, Belgique, Europe' },
+        { icon: <ShieldCheck className="text-[#1e3a5f]" size={24} />, title: 'Paiement sécurisé', desc: 'Stripe — Visa / Mastercard' },
+        { icon: <RefreshCcw className="text-[#1e3a5f]" size={24} />, title: 'Retours faciles', desc: "14 jours pour changer d'avis" },
+        { icon: <Headphones className="text-[#1e3a5f]" size={24} />, title: 'Service client', desc: 'Réponse sous 24h' },
     ];
 
     return (
@@ -134,11 +134,11 @@ function SectionHeader({ title, subtitle, viewAllLink, viewAllLabel = 'Voir tout
     return (
         <div className="flex items-end justify-between mb-8">
             <div>
-                <h2 className="text-2xl md:text-3xl font-serif font-bold text-[#0f2b1c]">{title}</h2>
+                <h2 className="text-2xl md:text-3xl font-serif font-bold text-[#0f2240]">{title}</h2>
                 {subtitle && <p className="text-stone-500 mt-1 text-sm">{subtitle}</p>}
             </div>
             {viewAllLink && (
-                <Link href={viewAllLink} className="flex items-center gap-1 text-[#1a4731] font-semibold text-sm hover:gap-2 transition-all">
+                <Link href={viewAllLink} className="flex items-center gap-1 text-[#1e3a5f] font-semibold text-sm hover:gap-2 transition-all">
                     {viewAllLabel} <ChevronRight size={16} />
                 </Link>
             )}
@@ -162,10 +162,10 @@ function CategoryGrid({ categories }: { categories: Category[] }) {
                         <Link
                             key={cat.id}
                             href={route('shop.category', cat.slug)}
-                            className="group flex flex-col items-center gap-2 p-4 bg-white rounded-xl hover:bg-[#1a4731] transition-all duration-300 hover:shadow-md text-center"
+                            className="group flex flex-col items-center gap-2 p-4 bg-white rounded-xl hover:bg-[#1e3a5f] transition-all duration-300 hover:shadow-md text-center"
                         >
                             <div className="w-12 h-12 bg-[#f5efe0] group-hover:bg-white/10 rounded-lg flex items-center justify-center text-2xl transition-colors">
-                                {getCategoryEmoji(cat.name)}
+                                {getCategoryIcon(cat.name)}
                             </div>
                             <span className="text-xs font-medium text-stone-700 group-hover:text-white transition-colors leading-tight">
                                 {cat.name}
@@ -178,13 +178,22 @@ function CategoryGrid({ categories }: { categories: Category[] }) {
     );
 }
 
-function getCategoryEmoji(name: string): string {
-    const map: Record<string, string> = {
-        'Croyance': '🌟', 'Fiqh': '⚖️', 'Hadith': '📿', 'Coran': '📖',
-        'Éducation': '✏️', 'Femme': '🌹', 'Enfants': '🎈', 'Biographies': '👤',
-        'Mariage': '💍', 'Famille': '🏠', 'Comportement': '💎', 'Langue arabe': '🔤',
+function getCategoryIcon(name: string): ReactNode {
+    const map: Record<string, ReactNode> = {
+        'Croyance': <Star size={22} />,
+        'Fiqh': <Scale size={22} />,
+        'Hadith': <BookMarked size={22} />,
+        'Coran': <BookOpen size={22} />,
+        'Éducation': <GraduationCap size={22} />,
+        'Femme': <Heart size={22} />,
+        'Enfants': <Smile size={22} />,
+        'Biographies': <User size={22} />,
+        'Mariage': <Heart size={22} />,
+        'Famille': <HomeIcon size={22} />,
+        'Comportement': <Gem size={22} />,
+        'Langue arabe': <Languages size={22} />,
     };
-    return map[name] || '📚';
+    return map[name] ?? <BookOpen size={22} />;
 }
 
 interface ProductSectionProps {
@@ -216,7 +225,7 @@ function PromoBanner() {
         <section className="py-6">
             <div className="max-w-7xl mx-auto px-4">
                 <div className="grid md:grid-cols-2 gap-4">
-                    <Link href={route('shop.sale')} className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#1a4731] to-[#2d7a52] p-8 flex flex-col justify-between min-h-48">
+                    <Link href={route('shop.sale')} className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#1e3a5f] to-[#2d5a8e] p-8 flex flex-col justify-between min-h-48">
                         <div className="text-white">
                             <div className="text-[#c9a84c] font-bold text-sm uppercase tracking-wider mb-2">Promotions</div>
                             <h3 className="text-2xl md:text-3xl font-serif font-bold leading-tight">Jusqu'à -40%<br />sur une sélection</h3>
@@ -273,7 +282,7 @@ function TestimonialsSection({ reviews }: { reviews: Review[] }) {
         <section className="py-16 bg-[#fdf8f0]">
             <div className="max-w-7xl mx-auto px-4">
                 <div className="text-center mb-10">
-                    <h2 className="text-3xl font-serif font-bold text-[#0f2b1c]">Ce que disent nos clients</h2>
+                    <h2 className="text-3xl font-serif font-bold text-[#0f2240]">Ce que disent nos clients</h2>
                     <div className="flex items-center justify-center gap-2 mt-3">
                         <div className="flex">
                             {[1,2,3,4,5].map(i => <Star key={i} size={18} className="text-[#c9a84c] fill-[#c9a84c]" />)}
@@ -292,12 +301,12 @@ function TestimonialsSection({ reviews }: { reviews: Review[] }) {
                             </div>
                             <p className="text-stone-600 text-sm leading-relaxed italic mb-4">"{review.text || review.content}"</p>
                             <div className="flex items-center gap-2">
-                                <div className="w-8 h-8 bg-[#1a4731] rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                <div className="w-8 h-8 bg-[#1e3a5f] rounded-full flex items-center justify-center text-white text-xs font-bold">
                                     {(review.name || review.author_name || '?')[0]}
                                 </div>
                                 <div>
                                     <div className="font-semibold text-stone-800 text-sm">{review.name || review.author_name}</div>
-                                    {review.is_verified_purchase && <div className="text-xs text-[#1a4731]">✓ Achat vérifié</div>}
+                                    {review.is_verified_purchase && <div className="text-xs text-[#1e3a5f]">✓ Achat vérifié</div>}
                                 </div>
                             </div>
                         </div>
@@ -314,10 +323,10 @@ function AboutSection() {
             <div className="max-w-7xl mx-auto px-4">
                 <div className="grid md:grid-cols-2 gap-12 items-center">
                     <div>
-                        <div className="inline-block bg-[#f5efe0] text-[#1a4731] text-sm font-bold px-4 py-2 rounded-full mb-6 uppercase tracking-wider">
+                        <div className="inline-block bg-[#f5efe0] text-[#1e3a5f] text-sm font-bold px-4 py-2 rounded-full mb-6 uppercase tracking-wider">
                             Notre histoire
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#0f2b1c] mb-6 leading-tight">
+                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#0f2240] mb-6 leading-tight">
                             Librairie Taous &<br />Éditions Taous
                         </h2>
                         <p className="text-stone-600 leading-relaxed mb-4">
@@ -327,7 +336,7 @@ function AboutSection() {
                             Nous proposons une sélection rigoureuse d'ouvrages couvrant toutes les disciplines de l'islam : croyance, fiqh, hadith, Coran, éducation, famille et bien plus encore.
                         </p>
                         <p className="text-stone-600 leading-relaxed mb-8">
-                            Les <strong className="text-[#1a4731]">Éditions Taous</strong> constituent notre maison d'édition propre, garantissant des publications soigneusement vérifiées, accessibles et fidèles aux sources authentiques.
+                            Les <strong className="text-[#1e3a5f]">Éditions Taous</strong> constituent notre maison d'édition propre, garantissant des publications soigneusement vérifiées, accessibles et fidèles aux sources authentiques.
                         </p>
                         <div className="grid grid-cols-3 gap-4">
                             {[
@@ -336,7 +345,7 @@ function AboutSection() {
                                 { value: '10+', label: "Ans d'expérience" },
                             ].map((stat, i) => (
                                 <div key={i} className="text-center p-4 bg-[#fdf8f0] rounded-xl">
-                                    <div className="text-2xl font-bold text-[#1a4731] font-serif">{stat.value}</div>
+                                    <div className="text-2xl font-bold text-[#1e3a5f] font-serif">{stat.value}</div>
                                     <div className="text-stone-500 text-xs mt-1">{stat.label}</div>
                                 </div>
                             ))}
@@ -345,21 +354,21 @@ function AboutSection() {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-4">
-                            <div className="bg-[#1a4731] rounded-2xl p-6 text-white">
+                            <div className="bg-[#1e3a5f] rounded-2xl p-6 text-white">
                                 <BookOpen size={32} className="text-[#c9a84c] mb-3" />
                                 <h3 className="font-serif font-bold text-lg mb-2">Catalogue complet</h3>
                                 <p className="text-white/70 text-sm">+1000 références soigneusement sélectionnées</p>
                             </div>
                             <div className="bg-[#f5efe0] rounded-2xl p-6">
-                                <Award size={32} className="text-[#1a4731] mb-3" />
-                                <h3 className="font-serif font-bold text-lg text-[#0f2b1c] mb-2">Éditions propres</h3>
+                                <Award size={32} className="text-[#1e3a5f] mb-3" />
+                                <h3 className="font-serif font-bold text-lg text-[#0f2240] mb-2">Éditions propres</h3>
                                 <p className="text-stone-500 text-sm">Publications vérifiées et fidèles aux sources</p>
                             </div>
                         </div>
                         <div className="space-y-4 mt-8">
                             <div className="bg-[#f5efe0] rounded-2xl p-6">
-                                <Truck size={32} className="text-[#1a4731] mb-3" />
-                                <h3 className="font-serif font-bold text-lg text-[#0f2b1c] mb-2">Livraison rapide</h3>
+                                <Truck size={32} className="text-[#1e3a5f] mb-3" />
+                                <h3 className="font-serif font-bold text-lg text-[#0f2240] mb-2">Livraison rapide</h3>
                                 <p className="text-stone-500 text-sm">France, Belgique, et toute l'Europe</p>
                             </div>
                             <div className="bg-[#c9a84c] rounded-2xl p-6 text-white">
@@ -379,7 +388,7 @@ function PreorderSection({ products }: { products: Product[] }) {
     if (!products?.length) return null;
 
     return (
-        <section className="py-16 bg-gradient-to-r from-[#1a2e4a] to-[#1a4731]">
+        <section className="py-16 bg-gradient-to-r from-[#1a2e4a] to-[#1e3a5f]">
             <div className="max-w-7xl mx-auto px-4">
                 <div className="text-center mb-10">
                     <div className="inline-block bg-[#c9a84c] text-white text-sm font-bold px-4 py-2 rounded-full mb-4">
@@ -396,7 +405,7 @@ function PreorderSection({ products }: { products: Product[] }) {
                 </div>
 
                 <div className="text-center mt-10">
-                    <Link href={route('shop.preorders')} className="inline-flex items-center gap-2 border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-[#1a4731] transition-colors">
+                    <Link href={route('shop.preorders')} className="inline-flex items-center gap-2 border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-[#1e3a5f] transition-colors">
                         Toutes les précommandes <ChevronRight size={18} />
                     </Link>
                 </div>
@@ -411,18 +420,18 @@ function DonationSection() {
             <div className="max-w-7xl mx-auto px-4">
                 <div className="bg-gradient-to-r from-[#fdf8f0] to-[#f5efe0] rounded-3xl p-8 md:p-12 border border-[#c9a84c]/20">
                     <div className="max-w-2xl mx-auto text-center">
-                        <div className="text-4xl mb-4">📿</div>
-                        <h2 className="text-3xl font-serif font-bold text-[#0f2b1c] mb-4">
+                        <div className="flex justify-center mb-4"><Gift size={48} className="text-[#c9a84c]" /></div>
+                        <h2 className="text-3xl font-serif font-bold text-[#0f2240] mb-4">
                             Don Sadaqa — Offrir un livre
                         </h2>
                         <p className="text-stone-600 leading-relaxed mb-6">
                             Offrez le cadeau de la connaissance à quelqu'un dans le besoin. Pour la modique somme d'un livre, vous pouvez offrir un Coran ou un ouvrage islamique à une personne qui n'en a pas les moyens.
                         </p>
-                        <p className="text-[#1a4731] font-semibold italic mb-8">
+                        <p className="text-[#1e3a5f] font-semibold italic mb-8">
                             "Lorsque le fils d'Adam meurt, ses actions s'arrêtent sauf pour trois choses : une sadaqa jariya, une connaissance utile, ou un enfant vertueux qui prie pour lui." — Prophète ﷺ
                         </p>
                         <Link href={route('donation')} className="inline-flex items-center gap-2 bg-[#c9a84c] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#e8c97a] transition-colors text-lg">
-                            Faire un don de livre ❤️
+                            Faire un don de livre <Heart size={18} className="inline" />
                         </Link>
                     </div>
                 </div>

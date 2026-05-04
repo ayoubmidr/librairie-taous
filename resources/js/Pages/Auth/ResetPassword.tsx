@@ -27,7 +27,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
             <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
                 <div className="w-full max-w-md">
                     <div className="text-center mb-8">
-                        <h1 className="text-2xl font-serif font-bold text-[#0f2b1c]">Nouveau mot de passe</h1>
+                        <h1 className="text-2xl font-serif font-bold text-[#0f2240]">Nouveau mot de passe</h1>
                         <p className="text-stone-500 mt-2 text-sm">Choisissez un nouveau mot de passe sécurisé.</p>
                     </div>
 
@@ -39,7 +39,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                     type="email"
                                     value={data.email}
                                     onChange={e => setData('email', e.target.value)}
-                                    className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                    className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                     readOnly
                                 />
                             </div>
@@ -51,7 +51,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                         type={showPassword ? 'text' : 'password'}
                                         value={data.password}
                                         onChange={e => setData('password', e.target.value)}
-                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 pr-10 text-sm focus:outline-none focus:border-[#1a4731]"
+                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 pr-10 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                         placeholder="Minimum 8 caractères"
                                     />
                                     <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400">
@@ -67,7 +67,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                                     type="password"
                                     value={data.password_confirmation}
                                     onChange={e => setData('password_confirmation', e.target.value)}
-                                    className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                    className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                     placeholder="Répétez votre mot de passe"
                                 />
                             </div>
@@ -75,7 +75,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="w-full bg-[#1a4731] text-white py-3.5 rounded-lg font-semibold hover:bg-[#2d7a52] transition-colors disabled:opacity-50"
+                                className="w-full bg-[#1e3a5f] text-white py-3.5 rounded-lg font-semibold hover:bg-[#2d5a8e] transition-colors disabled:opacity-50"
                             >
                                 {processing ? 'Réinitialisation...' : 'Réinitialiser le mot de passe'}
                             </button>

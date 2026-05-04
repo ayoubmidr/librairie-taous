@@ -1,6 +1,6 @@
 import { useForm } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
-import { Mail, Phone, MapPin, Clock } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, CheckCircle } from 'lucide-react';
 
 export default function Contact() {
     const { data, setData, post, processing, errors, wasSuccessful } = useForm({
@@ -19,7 +19,7 @@ export default function Contact() {
         <MainLayout title="Contact">
             <div className="max-w-6xl mx-auto px-4 py-12">
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl font-serif font-bold text-[#0f2b1c] mb-4">Contactez-nous</h1>
+                    <h1 className="text-4xl font-serif font-bold text-[#0f2240] mb-4">Contactez-nous</h1>
                     <p className="text-stone-500 text-lg">Notre équipe vous répond sous 24h</p>
                 </div>
 
@@ -33,7 +33,7 @@ export default function Contact() {
                             { icon: <Clock size={20} />, title: 'Horaires', text: 'Lundi — Vendredi', sub: '9h00 — 18h00' },
                         ].map((item, i) => (
                             <div key={i} className="flex gap-4 p-5 bg-white rounded-xl border border-stone-100">
-                                <div className="w-10 h-10 bg-[#f5efe0] rounded-lg flex items-center justify-center text-[#1a4731] flex-shrink-0">
+                                <div className="w-10 h-10 bg-[#f5efe0] rounded-lg flex items-center justify-center text-[#1e3a5f] flex-shrink-0">
                                     {item.icon}
                                 </div>
                                 <div>
@@ -49,8 +49,8 @@ export default function Contact() {
                     <div className="md:col-span-2 bg-white rounded-2xl border border-stone-100 p-8">
                         {wasSuccessful ? (
                             <div className="text-center py-12">
-                                <div className="text-5xl mb-4">✅</div>
-                                <h2 className="text-2xl font-serif font-bold text-[#0f2b1c] mb-3">Message envoyé !</h2>
+                                <div className="flex justify-center mb-4"><CheckCircle size={64} className="text-green-500" /></div>
+                                <h2 className="text-2xl font-serif font-bold text-[#0f2240] mb-3">Message envoyé !</h2>
                                 <p className="text-stone-600">Nous vous répondrons dans les 24 heures.</p>
                             </div>
                         ) : (
@@ -62,7 +62,7 @@ export default function Contact() {
                                             type="text"
                                             value={data.name}
                                             onChange={e => setData('name', e.target.value)}
-                                            className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                            className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                             placeholder="Mohammed Dupont"
                                         />
                                         {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
@@ -73,7 +73,7 @@ export default function Contact() {
                                             type="email"
                                             value={data.email}
                                             onChange={e => setData('email', e.target.value)}
-                                            className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                            className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                             placeholder="votre@email.com"
                                         />
                                         {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
@@ -86,7 +86,7 @@ export default function Contact() {
                                         type="text"
                                         value={data.subject}
                                         onChange={e => setData('subject', e.target.value)}
-                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                         placeholder="Objet de votre message"
                                     />
                                 </div>
@@ -97,7 +97,7 @@ export default function Contact() {
                                         value={data.message}
                                         onChange={e => setData('message', e.target.value)}
                                         rows={6}
-                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731] resize-none"
+                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f] resize-none"
                                         placeholder="Votre message..."
                                     />
                                     {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
@@ -106,7 +106,7 @@ export default function Contact() {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="w-full bg-[#1a4731] text-white py-3.5 rounded-lg font-semibold hover:bg-[#2d7a52] transition-colors disabled:opacity-50"
+                                    className="w-full bg-[#1e3a5f] text-white py-3.5 rounded-lg font-semibold hover:bg-[#2d5a8e] transition-colors disabled:opacity-50"
                                 >
                                     {processing ? 'Envoi en cours...' : 'Envoyer le message'}
                                 </button>

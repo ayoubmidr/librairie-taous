@@ -1,5 +1,6 @@
 import { useForm, Link } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
+import { CheckCircle } from 'lucide-react';
 
 export default function ForgotPassword() {
     const { data, setData, post, processing, errors, wasSuccessful } = useForm({
@@ -16,7 +17,7 @@ export default function ForgotPassword() {
             <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
                 <div className="w-full max-w-md">
                     <div className="text-center mb-8">
-                        <h1 className="text-2xl font-serif font-bold text-[#0f2b1c]">Mot de passe oublié</h1>
+                        <h1 className="text-2xl font-serif font-bold text-[#0f2240]">Mot de passe oublié</h1>
                         <p className="text-stone-500 mt-2 text-sm">
                             Entrez votre email et nous vous enverrons un lien de réinitialisation.
                         </p>
@@ -25,7 +26,7 @@ export default function ForgotPassword() {
                     <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-8">
                         {wasSuccessful ? (
                             <div className="text-center py-4">
-                                <div className="text-4xl mb-3">✅</div>
+                                <div className="flex justify-center mb-3"><CheckCircle size={48} className="text-green-500" /></div>
                                 <p className="text-stone-600">Un email de réinitialisation a été envoyé si ce compte existe.</p>
                             </div>
                         ) : (
@@ -36,7 +37,7 @@ export default function ForgotPassword() {
                                         type="email"
                                         value={data.email}
                                         onChange={e => setData('email', e.target.value)}
-                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1a4731]"
+                                        className="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f]"
                                         placeholder="votre@email.com"
                                         autoComplete="email"
                                         autoFocus
@@ -47,7 +48,7 @@ export default function ForgotPassword() {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="w-full bg-[#1a4731] text-white py-3.5 rounded-lg font-semibold hover:bg-[#2d7a52] transition-colors disabled:opacity-50"
+                                    className="w-full bg-[#1e3a5f] text-white py-3.5 rounded-lg font-semibold hover:bg-[#2d5a8e] transition-colors disabled:opacity-50"
                                 >
                                     {processing ? 'Envoi...' : 'Envoyer le lien'}
                                 </button>
@@ -55,7 +56,7 @@ export default function ForgotPassword() {
                         )}
 
                         <div className="mt-6 text-center text-sm text-stone-500">
-                            <Link href={route('login')} className="text-[#1a4731] font-semibold hover:underline">
+                            <Link href={route('login')} className="text-[#1e3a5f] font-semibold hover:underline">
                                 ← Retour à la connexion
                             </Link>
                         </div>
