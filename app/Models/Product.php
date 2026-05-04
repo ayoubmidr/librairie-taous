@@ -47,6 +47,11 @@ class Product extends Model
             ->saveSlugsTo('slug');
     }
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     public function toSearchableArray(): array
     {
         return [

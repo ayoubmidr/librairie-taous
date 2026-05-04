@@ -1,0 +1,69 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: librairie-taous-app
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+      - vendor-data:/var/www/html/vendor
+      - composer-cache:/tmp/composer-cache
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://127.0.0.1:8000
+      COMPOSER_ALLOW_SUPERUSER: 1
+      COMPOSER_CACHE_DIR: /tmp/composer-cache
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: librairie_taous
+      DB_USERNAME: taous
+      DB_PASSWORD: taous
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+      SESSION_DRIVER: database
+      VITE_APP_NAME: "Librairie Taous"
+      VITE_DEV_SERVER_URL: http://127.0.0.1:5173
+    ports:
+      - "8000:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command: sh docker/laravel/start.sh
+
+  npm:
+    image: node:22-bookworm
+    container_name: librairie-taous-npm
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+      - node-modules:/var/www/html/node_modules
+      - npm-cache:/root/.npm
+    ports:
+      - "5173:5173"
+    command: sh -lc "npm install && npm run dev -- --host 0.0.0.0"
+
+  mysql:
+    image: mysql:8.4
+    container_name: librairie-taous-mysql
+    environment:
+      MYSQL_DATABASE: librairie_taous
+      MYSQL_USER: taous
+      MYSQL_PASSWORD: taous
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  composer-cache:
+  npm-cache:
+  node-modules:
+  vendor-data:
+  mysql-data:

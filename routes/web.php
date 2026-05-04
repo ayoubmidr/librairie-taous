@@ -30,7 +30,7 @@ Route::prefix('boutique')->name('shop.')->group(function () {
 });
 
 // ─── Products ────────────────────────────────────────────────────────────────
-Route::get('/livres/{slug}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/livres/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 
 // ─── Publishers ──────────────────────────────────────────────────────────────
 Route::get('/maisons-edition', [PublisherController::class, 'index'])->name('publishers.index');
