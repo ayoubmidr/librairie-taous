@@ -1,29 +1,235 @@
 import { useState } from 'react';
-import { Link, router } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
-import { Trash2, Plus, Minus, ShoppingBag, Tag, ChevronRight, ShieldCheck, Truck, AlertTriangle, PartyPopper } from 'lucide-react';
+import {
+    Trash2, Plus, Minus, ShoppingBag, Tag, ChevronRight, ShieldCheck, Truck,
+    AlertTriangle, PartyPopper, MapPin, Zap, CheckCircle, User, Package,
+} from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { CartItem, CartSummary } from '@/types';
+import { CartItem, CartSummary, PageProps } from '@/types';
 
 interface CartProps {
     cart: CartItem[];
     summary: CartSummary;
 }
 
+// ─── Shipping config ────────────────────────────────────────────────────────
+const FREE_THRESHOLD = 125;
+
+interface ShippingOption {
+    id: 'relay' | 'classic' | 'express';
+    label: string;
+    description: string;
+    delay: string;
+    icon: React.ReactNode;
+    prices: [number, number]; // [0-50€ tier, 50-125€ tier]
+}
+
+const SHIPPING_OPTIONS: ShippingOption[] = [
+    {
+        id: 'relay',
+        label: 'Mondial Relay',
+        description: 'Point relais près de chez vous',
+        delay: '3–5 jours ouvrés',
+        icon: <MapPin size={18} />,
+        prices: [4.99, 8.99],
+    },
+    {
+        id: 'classic',
+        label: 'Livraison à domicile',
+        description: 'Livraison standard en boîte aux lettres',
+        delay: '2–4 jours ouvrés',
+        icon: <Truck size={18} />,
+        prices: [9.99, 13.50],
+    },
+    {
+        id: 'express',
+        label: 'Livraison rapide + signature',
+        description: 'Livraison express avec remise en main propre',
+        delay: '1–2 jours ouvrés',
+        icon: <Zap size={18} />,
+        prices: [14.00, 17.00],
+    },
+];
+
+function getShippingCost(optionId: ShippingOption['id'], subtotal: number): number {
+    if (subtotal >= FREE_THRESHOLD) return 0;
+    const option = SHIPPING_OPTIONS.find(o => o.id === optionId)!;
+    return subtotal < 50 ? option.prices[0] : option.prices[1];
+}
+
+// ─── Helper formatters ───────────────────────────────────────────────────────
 const toNumber = (value: unknown): number => {
-    const number = Number.parseFloat(String(value ?? 0));
-    return Number.isFinite(number) ? number : 0;
+    const n = Number.parseFloat(String(value ?? 0));
+    return Number.isFinite(n) ? n : 0;
 };
-
-const hasValue = (value: unknown): boolean => value !== null && value !== undefined && value !== '';
-
 const money = (value: unknown): string => toNumber(value).toFixed(2);
 
+// ─── Sub-components ──────────────────────────────────────────────────────────
+
+function FreeShippingBar({ subtotal }: { subtotal: number }) {
+    const remaining = Math.max(0, FREE_THRESHOLD - subtotal);
+    const progress = Math.min(100, (subtotal / FREE_THRESHOLD) * 100);
+    const isFree = subtotal >= FREE_THRESHOLD;
+
+    return (
+        <div className={`rounded-xl p-4 mb-4 ${isFree ? 'bg-green-50 border border-green-200' : 'bg-[#fdf8f0] border border-[#c9a84c]/30'}`}>
+            {isFree ? (
+                <div className="flex items-center gap-3">
+                    <PartyPopper size={20} className="text-green-500 flex-shrink-0" />
+                    <div>
+                        <p className="font-semibold text-green-700 text-sm">Livraison gratuite débloquée !</p>
+                        <p className="text-green-600 text-xs mt-0.5">+ Code <span className="font-mono font-bold">-10%</span> offert sur votre prochaine commande</p>
+                    </div>
+                </div>
+            ) : (
+                <div>
+                    <div className="flex items-center justify-between mb-2">
+                        <p className="text-stone-700 text-sm font-medium">
+                            Plus que <span className="font-bold text-[#1e3a5f]">{money(remaining)} €</span> avant la livraison gratuite
+                        </p>
+                        <span className="text-[#c9a84c] text-xs font-bold">{Math.round(progress)}%</span>
+                    </div>
+                    <div className="h-2 bg-stone-200 rounded-full overflow-hidden">
+                        <div
+                            className="h-full bg-gradient-to-r from-[#c9a84c] to-[#e8c97a] rounded-full transition-all duration-500"
+                            style={{ width: `${progress}%` }}
+                        />
+                    </div>
+                    <p className="text-stone-400 text-xs mt-2">
+                        Dès {FREE_THRESHOLD} € d'achat — livraison offerte + <span className="font-semibold">-10% sur votre prochaine commande</span>
+                    </p>
+                </div>
+            )}
+        </div>
+    );
+}
+
+function ShippingSelector({
+    subtotal,
+    selected,
+    onChange,
+}: {
+    subtotal: number;
+    selected: ShippingOption['id'];
+    onChange: (id: ShippingOption['id']) => void;
+}) {
+    if (subtotal >= FREE_THRESHOLD) {
+        return (
+            <div className="bg-white rounded-xl border border-green-200 p-5">
+                <h3 className="font-semibold text-stone-800 mb-3 flex items-center gap-2">
+                    <Truck size={16} className="text-green-500" /> Livraison
+                </h3>
+                <div className="flex items-center gap-3 bg-green-50 rounded-lg p-4">
+                    <PartyPopper size={20} className="text-green-500 flex-shrink-0" />
+                    <div>
+                        <p className="font-bold text-green-700">Félicitations, votre livraison est offerte !</p>
+                        <p className="text-green-600 text-xs mt-0.5">Applicable à tous les modes de livraison</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="bg-white rounded-xl border border-stone-100 p-5">
+            <h3 className="font-semibold text-stone-800 mb-4 flex items-center gap-2">
+                <Truck size={16} className="text-[#1e3a5f]" /> Mode de livraison
+            </h3>
+            <div className="space-y-3">
+                {SHIPPING_OPTIONS.map((option) => {
+                    const cost = getShippingCost(option.id, subtotal);
+                    const isSelected = selected === option.id;
+                    return (
+                        <button
+                            key={option.id}
+                            onClick={() => onChange(option.id)}
+                            className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all duration-150 ${
+                                isSelected
+                                    ? 'border-[#1e3a5f] bg-[#1e3a5f]/5'
+                                    : 'border-stone-200 hover:border-stone-300 bg-white'
+                            }`}
+                        >
+                            <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${isSelected ? 'bg-[#1e3a5f] text-white' : 'bg-stone-100 text-stone-500'}`}>
+                                {option.icon}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <div className="font-semibold text-stone-800 text-sm">{option.label}</div>
+                                <div className="text-stone-400 text-xs">{option.description} — {option.delay}</div>
+                            </div>
+                            <div className="flex-shrink-0 text-right">
+                                <div className={`font-bold text-base ${isSelected ? 'text-[#1e3a5f]' : 'text-stone-700'}`}>
+                                    {cost.toFixed(2)} €
+                                </div>
+                            </div>
+                            {isSelected && (
+                                <CheckCircle size={18} className="text-[#1e3a5f] flex-shrink-0" />
+                            )}
+                        </button>
+                    );
+                })}
+            </div>
+        </div>
+    );
+}
+
+function PaymentLogos() {
+    const methods = ['VISA', 'Mastercard', 'Bancontact', 'PayPal', 'Stripe', 'Apple Pay', 'G Pay'];
+    return (
+        <div className="mt-5 pt-4 border-t border-stone-100">
+            <p className="text-xs text-stone-400 mb-3 text-center font-medium">Moyens de paiement acceptés</p>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+                {methods.map((m) => (
+                    <span key={m} className="inline-flex items-center bg-stone-50 border border-stone-200 text-stone-600 text-xs font-semibold px-2.5 py-1 rounded-md tracking-wide">
+                        {m}
+                    </span>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function AccountCTA({ isGuest }: { isGuest: boolean }) {
+    if (!isGuest) return null;
+    return (
+        <div className="bg-[#fdf8f0] border border-[#c9a84c]/30 rounded-xl p-4 flex gap-3 items-start">
+            <User size={18} className="text-[#c9a84c] flex-shrink-0 mt-0.5" />
+            <div>
+                <p className="text-stone-700 text-sm font-semibold mb-0.5">Suivez votre commande facilement</p>
+                <p className="text-stone-500 text-xs leading-relaxed">
+                    Créez votre compte pour retrouver votre historique d'achats et profiter de vos avantages clients.
+                    L'achat sans compte reste possible.
+                </p>
+                <div className="flex gap-2 mt-2">
+                    <Link href={route('register')} className="text-xs font-semibold text-[#1e3a5f] hover:underline">
+                        Créer un compte →
+                    </Link>
+                    <span className="text-stone-300">|</span>
+                    <Link href={route('login')} className="text-xs text-stone-500 hover:underline">
+                        Se connecter
+                    </Link>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// ─── Main component ──────────────────────────────────────────────────────────
+
 export default function Cart({ cart, summary }: CartProps) {
+    const { auth } = usePage<PageProps>().props;
+    const isGuest = !auth?.user;
+
     const [couponCode, setCouponCode] = useState('');
     const [couponLoading, setCouponLoading] = useState(false);
     const [loadingItem, setLoadingItem] = useState<string | null>(null);
+    const [selectedShipping, setSelectedShipping] = useState<ShippingOption['id']>('classic');
+
+    const subtotal = toNumber(summary?.subtotal);
+    const couponDiscount = toNumber(summary?.coupon_discount);
+    const shippingCost = getShippingCost(selectedShipping, subtotal);
+    const computedTotal = Math.max(0, subtotal - couponDiscount + shippingCost);
 
     const updateQuantity = async (itemId: string, quantity: number) => {
         setLoadingItem(itemId);
@@ -62,6 +268,7 @@ export default function Cart({ cart, summary }: CartProps) {
         }
     };
 
+    // ─── Empty state ─────────────────────────────────────────────────────────
     if (!cart?.length) {
         return (
             <MainLayout title="Mon panier">
@@ -85,16 +292,24 @@ export default function Cart({ cart, summary }: CartProps) {
                 </h1>
 
                 <div className="grid lg:grid-cols-3 gap-8">
-                    {/* Cart Items */}
+
+                    {/* ── Left column: items + shipping ── */}
                     <div className="lg:col-span-2 space-y-4">
+
+                        {/* Barre de progression livraison gratuite */}
+                        <FreeShippingBar subtotal={subtotal} />
+
+                        {/* Avertissement précommandes */}
                         {cart.some(item => item.is_preorder) && (
                             <div className="bg-orange-50 border border-orange-200 rounded-xl p-4">
                                 <p className="text-orange-700 font-medium text-sm">
-                                    <AlertTriangle size={16} className="inline mr-1 align-text-bottom" /> Votre panier contient des articles en précommande. Ces articles seront expédiés séparément à leur date de disponibilité.
+                                    <AlertTriangle size={16} className="inline mr-1 align-text-bottom" />
+                                    Votre panier contient des articles en précommande. Ces articles seront expédiés séparément à leur date de disponibilité.
                                 </p>
                             </div>
                         )}
 
+                        {/* Articles */}
                         {cart.map((item) => (
                             <div key={item.id} className="bg-white rounded-xl border border-stone-100 p-4 flex gap-4">
                                 <Link href={route('products.show', item.product_slug)} className="flex-shrink-0">
@@ -156,14 +371,22 @@ export default function Cart({ cart, summary }: CartProps) {
                             </div>
                         ))}
 
+                        {/* Sélecteur mode de livraison */}
+                        <ShippingSelector
+                            subtotal={subtotal}
+                            selected={selectedShipping}
+                            onChange={setSelectedShipping}
+                        />
+
                         <Link href={route('shop.index')} className="inline-flex items-center gap-2 text-[#1e3a5f] font-medium text-sm hover:gap-3 transition-all">
                             ← Continuer mes achats
                         </Link>
                     </div>
 
-                    {/* Summary */}
+                    {/* ── Right column: summary ── */}
                     <div className="space-y-4">
-                        {/* Coupon */}
+
+                        {/* Code promo */}
                         <div className="bg-white rounded-xl border border-stone-100 p-5">
                             <h3 className="font-semibold text-stone-800 mb-3 flex items-center gap-2">
                                 <Tag size={16} /> Code promo
@@ -173,8 +396,8 @@ export default function Cart({ cart, summary }: CartProps) {
                                     type="text"
                                     value={couponCode}
                                     onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                                    placeholder="Votre code"
-                                    className="flex-1 border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1e3a5f] uppercase"
+                                    placeholder="Ex : BIENVENUE10"
+                                    className="flex-1 border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1e3a5f] uppercase font-mono tracking-wider"
                                 />
                                 <button type="submit" disabled={couponLoading || !couponCode} className="px-4 py-2 bg-[#1e3a5f] text-white rounded-lg text-sm font-semibold hover:bg-[#2d5a8e] transition-colors disabled:opacity-50">
                                     {couponLoading ? '...' : 'OK'}
@@ -182,41 +405,67 @@ export default function Cart({ cart, summary }: CartProps) {
                             </form>
                             {summary?.coupon && (
                                 <div className="mt-2 flex items-center justify-between text-sm">
-                                    <span className="text-green-600 font-medium">✓ {summary.coupon}</span>
-                                    <button onClick={() => { axios.delete(route('cart.coupon.remove')).then(() => router.reload()); }} className="text-red-500 text-xs">Supprimer</button>
+                                    <span className="text-green-600 font-medium flex items-center gap-1">
+                                        <CheckCircle size={13} /> {summary.coupon}
+                                    </span>
+                                    <button
+                                        onClick={() => { axios.delete(route('cart.coupon.remove')).then(() => router.reload()); }}
+                                        className="text-red-500 text-xs hover:underline"
+                                    >
+                                        Supprimer
+                                    </button>
                                 </div>
                             )}
                         </div>
 
-                        {/* Order Summary */}
+                        {/* Récapitulatif */}
                         <div className="bg-white rounded-xl border border-stone-100 p-5 sticky top-24">
                             <h3 className="font-semibold text-stone-800 mb-5 text-lg">Récapitulatif</h3>
 
                             <div className="space-y-3 text-sm">
                                 <div className="flex justify-between text-stone-600">
                                     <span>Sous-total</span>
-                                    <span>{money(summary?.subtotal)} €</span>
+                                    <span>{money(subtotal)} €</span>
                                 </div>
-                                {toNumber(summary?.coupon_discount) > 0 && (
+                                {couponDiscount > 0 && (
                                     <div className="flex justify-between text-green-600">
                                         <span>Code promo</span>
-                                        <span>-{money(summary.coupon_discount)} €</span>
+                                        <span>-{money(couponDiscount)} €</span>
                                     </div>
                                 )}
                                 <div className="flex justify-between text-stone-600">
-                                    <span>Livraison</span>
-                                    <span className={hasValue(summary?.shipping) && toNumber(summary?.shipping) === 0 ? 'text-green-600 font-medium' : ''}>
-                                        {hasValue(summary?.shipping) && toNumber(summary?.shipping) === 0 ? <span className="flex items-center gap-1">Gratuite <PartyPopper size={14} /></span> : hasValue(summary?.shipping) ? `${money(summary.shipping)} €` : 'Calculé au checkout'}
+                                    <span className="flex items-center gap-1">
+                                        Livraison
+                                        {subtotal < FREE_THRESHOLD && (
+                                            <span className="text-xs text-stone-400">
+                                                ({SHIPPING_OPTIONS.find(o => o.id === selectedShipping)?.label})
+                                            </span>
+                                        )}
                                     </span>
+                                    {shippingCost === 0 ? (
+                                        <span className="text-green-600 font-semibold flex items-center gap-1">
+                                            Gratuite <PartyPopper size={13} />
+                                        </span>
+                                    ) : (
+                                        <span>{money(shippingCost)} €</span>
+                                    )}
                                 </div>
                                 <div className="border-t border-stone-100 pt-3 flex justify-between font-bold text-lg">
                                     <span>Total TTC</span>
-                                    <span className="text-[#1e3a5f]">{money(summary?.total)} €</span>
+                                    <span className="text-[#1e3a5f]">{money(computedTotal)} €</span>
                                 </div>
                             </div>
 
-                            <Link href={route('checkout.index')} className="w-full flex items-center justify-center gap-2 mt-6 bg-[#1e3a5f] text-white py-4 rounded-lg font-semibold hover:bg-[#2d5a8e] transition-colors">
-                                Passer commande <ChevronRight size={18} />
+                            {/* CTA compte invité */}
+                            <div className="mt-5">
+                                <AccountCTA isGuest={isGuest} />
+                            </div>
+
+                            <Link
+                                href={route('checkout.index') + `?shipping=${selectedShipping}`}
+                                className="w-full flex items-center justify-center gap-2 mt-4 bg-[#1e3a5f] text-white py-4 rounded-xl font-bold text-base hover:bg-[#2d5a8e] transition-colors shadow-md"
+                            >
+                                <Package size={18} /> Passer commande <ChevronRight size={18} />
                             </Link>
 
                             <div className="mt-4 space-y-2">
@@ -224,9 +473,12 @@ export default function Cart({ cart, summary }: CartProps) {
                                     <ShieldCheck size={12} className="text-[#1e3a5f]" /> Paiement 100% sécurisé par Stripe
                                 </div>
                                 <div className="flex items-center gap-2 text-xs text-stone-400">
-                                    <Truck size={12} className="text-[#1e3a5f]" /> Livraison gratuite dès 50€
+                                    <Truck size={12} className="text-[#1e3a5f]" /> Livraison gratuite dès {FREE_THRESHOLD} €
                                 </div>
                             </div>
+
+                            {/* Logos moyens de paiement */}
+                            <PaymentLogos />
                         </div>
                     </div>
                 </div>
