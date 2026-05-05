@@ -1,6 +1,6 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { ShoppingBag, Search, Menu, X, ChevronDown, Heart, User, Phone, Mail, Truck, BookOpen, Leaf, Smile, HeartHandshake, Star, Sparkles, Package } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, ChevronDown, Heart, User, Phone, Mail, Truck, BookOpen, Leaf, Smile, HeartHandshake, Star, Sparkles, Package, Bell, CheckCircle, Copy } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { PageProps, Category, AuthUser } from '@/types';
 
@@ -374,6 +374,122 @@ function Footer() {
     );
 }
 
+function NewsletterWidget() {
+    const [open, setOpen] = useState(false);
+    const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [result, setResult] = useState<{ coupon_code?: string; already_subscribed?: boolean; message?: string } | null>(null);
+    const [copied, setCopied] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!email.trim()) return;
+        setLoading(true);
+        try {
+            const res = await fetch('/newsletter/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || '' },
+                body: JSON.stringify({ email }),
+            });
+            const data = await res.json();
+            setResult(data);
+        } catch {
+            setResult({ message: 'Une erreur est survenue. Veuillez réessayer.' });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const copyCode = () => {
+        if (result?.coupon_code) {
+            navigator.clipboard.writeText(result.coupon_code);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        }
+    };
+
+    return (
+        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+            {/* Widget panel */}
+            {open && (
+                <div className="w-80 bg-white rounded-2xl shadow-2xl border border-stone-100 overflow-hidden">
+                    {/* Header */}
+                    <div className="bg-gradient-to-r from-[#1e3a5f] to-[#0f2240] p-5">
+                        <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                                <Bell size={16} className="text-[#c9a84c]" />
+                                <span className="text-white font-bold text-sm uppercase tracking-wider">Newsletter</span>
+                            </div>
+                            <button onClick={() => setOpen(false)} className="text-white/50 hover:text-white transition-colors">
+                                <X size={18} />
+                            </button>
+                        </div>
+                        <p className="text-white text-base font-serif font-bold leading-tight">
+                            -10% sur votre première commande
+                        </p>
+                        <p className="text-stone-300 text-xs mt-1">Inscrivez-vous et recevez votre code promo</p>
+                    </div>
+
+                    {/* Body */}
+                    <div className="p-5">
+                        {result?.coupon_code ? (
+                            <div className="text-center">
+                                <CheckCircle size={36} className="text-green-500 mx-auto mb-3" />
+                                <p className="font-semibold text-stone-800 mb-1 text-sm">
+                                    {result.already_subscribed ? 'Vous êtes déjà abonné !' : 'Inscription réussie !'}
+                                </p>
+                                <p className="text-stone-500 text-xs mb-4">Voici votre code promo :</p>
+                                <button
+                                    onClick={copyCode}
+                                    className="w-full flex items-center justify-between bg-[#fdf8f0] border-2 border-dashed border-[#c9a84c] rounded-xl px-4 py-3 group hover:bg-[#f5efe0] transition-colors"
+                                >
+                                    <span className="font-mono font-bold text-[#1e3a5f] text-lg tracking-widest">{result.coupon_code}</span>
+                                    <span className="flex items-center gap-1 text-xs text-[#c9a84c] font-semibold">
+                                        {copied ? <CheckCircle size={14} /> : <Copy size={14} />}
+                                        {copied ? 'Copié !' : 'Copier'}
+                                    </span>
+                                </button>
+                                <p className="text-stone-400 text-xs mt-3">-10% valable sur toute la boutique</p>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubmit} className="space-y-3">
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="votre@email.com"
+                                    required
+                                    className="w-full border border-stone-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#1e3a5f] transition-colors"
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full bg-[#1e3a5f] text-white py-2.5 rounded-lg font-semibold text-sm hover:bg-[#2d5a8e] transition-colors disabled:opacity-50"
+                                >
+                                    {loading ? 'Inscription...' : 'Obtenir mon code -10%'}
+                                </button>
+                                {result?.message && !result.coupon_code && (
+                                    <p className="text-red-500 text-xs text-center">{result.message}</p>
+                                )}
+                                <p className="text-stone-400 text-xs text-center">Pas de spam. Désinscription à tout moment.</p>
+                            </form>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {/* Floating button */}
+            <button
+                onClick={() => setOpen(!open)}
+                className={`flex items-center gap-2 px-5 py-3 rounded-full shadow-xl font-semibold text-sm transition-all duration-300 ${open ? 'bg-stone-700 text-white' : 'bg-[#1e3a5f] text-white hover:bg-[#2d5a8e]'}`}
+            >
+                {open ? <X size={18} /> : <Bell size={18} className="text-[#c9a84c]" />}
+                {!open && <span>-10% sur votre 1<sup>ère</sup> commande</span>}
+            </button>
+        </div>
+    );
+}
+
 interface MainLayoutProps {
     children: ReactNode;
     title?: string;
@@ -402,6 +518,7 @@ export default function MainLayout({ children, title, description }: MainLayoutP
                 </main>
 
                 <Footer />
+                <NewsletterWidget />
             </div>
         </>
     );

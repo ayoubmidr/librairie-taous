@@ -192,11 +192,8 @@ class ProductController extends Controller
             ->paginate(24)
             ->through(fn($p) => $this->formatProduct($p));
 
-        return Inertia::render('Shop/Index', [
+        return Inertia::render('Shop/Packs', [
             'products' => $products,
-            'categories' => Category::where('is_active', true)->get(),
-            'filters' => [],
-            'title' => 'Packs & Lots',
         ]);
     }
 
