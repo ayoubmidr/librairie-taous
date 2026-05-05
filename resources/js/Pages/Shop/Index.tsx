@@ -3,13 +3,15 @@ import { Link, router } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 import ProductCard from '@/Components/ProductCard';
 import { ChevronDown, X, SlidersHorizontal, BookOpen } from 'lucide-react';
-import { Category, PaginatedData, Product } from '@/types';
+import { Category, PaginatedData, Product, Publisher } from '@/types';
 
 interface ActiveFilters {
     price?: string | null;
     category?: string | null;
     availability?: string | null;
     language?: string | null;
+    publisher?: string | null;
+    is_new?: string | null;
     [key: string]: string | null | undefined;
 }
 
@@ -17,11 +19,26 @@ interface FilterSidebarProps {
     activeFilters: ActiveFilters;
     onFilterChange: (key: string, value: string | null) => void;
     categories: Category[];
+    publishers: Publisher[];
 }
 
-function FilterSidebar({ activeFilters, onFilterChange, categories }: FilterSidebarProps) {
+function FilterSidebar({ activeFilters, onFilterChange, categories, publishers }: FilterSidebarProps) {
     return (
         <div className="space-y-6">
+            {/* Nouveautés */}
+            <div>
+                <h3 className="font-semibold text-stone-800 mb-3">Nouveautés</h3>
+                <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked={activeFilters.is_new === '1'}
+                        onChange={() => onFilterChange('is_new', activeFilters.is_new === '1' ? null : '1')}
+                        className="rounded border-stone-300 text-[#1e3a5f] focus:ring-[#1e3a5f]"
+                    />
+                    <span className="text-sm text-stone-600">Nouvelles parutions uniquement</span>
+                </label>
+            </div>
+
             {/* Prix */}
             <div>
                 <h3 className="font-semibold text-stone-800 mb-3 flex items-center justify-between">
@@ -62,6 +79,26 @@ function FilterSidebar({ activeFilters, onFilterChange, categories }: FilterSide
                                     className="rounded border-stone-300 text-[#1e3a5f] focus:ring-[#1e3a5f]"
                                 />
                                 <span className="text-sm text-stone-600">{cat.name}</span>
+                            </label>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Maison d'édition */}
+            {publishers?.length > 0 && (
+                <div>
+                    <h3 className="font-semibold text-stone-800 mb-3">Maison d'édition</h3>
+                    <div className="space-y-2 max-h-52 overflow-y-auto">
+                        {publishers.map((pub) => (
+                            <label key={pub.id} className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={activeFilters.publisher === pub.slug}
+                                    onChange={() => onFilterChange('publisher', activeFilters.publisher === pub.slug ? null : pub.slug)}
+                                    className="rounded border-stone-300 text-[#1e3a5f] focus:ring-[#1e3a5f]"
+                                />
+                                <span className="text-sm text-stone-600 leading-tight">{pub.name}</span>
                             </label>
                         ))}
                     </div>
@@ -117,12 +154,13 @@ function FilterSidebar({ activeFilters, onFilterChange, categories }: FilterSide
 interface ShopIndexProps {
     products: PaginatedData<Product>;
     categories: Category[];
+    publishers: Publisher[];
     filters: ActiveFilters;
     title?: string;
     currentCategory?: string;
 }
 
-export default function ShopIndex({ products, categories, filters, title }: ShopIndexProps) {
+export default function ShopIndex({ products, categories, publishers = [], filters, title }: ShopIndexProps) {
     const [activeFilters, setActiveFilters] = useState<ActiveFilters>(filters || {});
     const [sortBy, setSortBy] = useState('newest');
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -201,6 +239,7 @@ export default function ShopIndex({ products, categories, filters, title }: Shop
                                 activeFilters={activeFilters}
                                 onFilterChange={handleFilterChange}
                                 categories={categories}
+                                publishers={publishers}
                             />
                         </div>
                     </aside>
@@ -266,6 +305,7 @@ export default function ShopIndex({ products, categories, filters, title }: Shop
                             activeFilters={activeFilters}
                             onFilterChange={(key, value) => { handleFilterChange(key, value); setMobileFiltersOpen(false); }}
                             categories={categories}
+                            publishers={publishers}
                         />
                     </div>
                 </div>

@@ -1,27 +1,29 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { ShoppingBag, Search, Menu, X, ChevronDown, Heart, User, Phone, Mail, Truck } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, ChevronDown, Heart, User, Phone, Mail, Truck, BookOpen, Leaf, GraduationCap, Sparkles, Star, Droplets } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import { PageProps, Category, AuthUser } from '@/types';
+import { PageProps, AuthUser } from '@/types';
 
 interface NavbarProps {
-    categories: Category[];
     cartCount: number;
     user: AuthUser | null;
 }
 
-interface NavLink {
-    label: string;
-    href: string;
-    hasDropdown?: boolean;
-    items?: Category[];
-}
+const megaMenuCategories = [
+    { label: 'Livres', icon: BookOpen, href: route('shop.index'), desc: 'Tous nos livres islamiques' },
+    { label: 'Santé', icon: Leaf, href: route('shop.category', 'sante'), desc: 'Bien-être & médecine' },
+    { label: 'Enfants & Éducation', icon: GraduationCap, href: route('shop.category', 'enfants-education'), desc: 'Pour les jeunes esprits' },
+    { label: 'Mariage', icon: Sparkles, href: route('shop.category', 'mariage'), desc: 'Préparer et célébrer' },
+    { label: 'Croyance', icon: Star, href: route('shop.category', 'croyance'), desc: 'Aqida & foi islamique' },
+    { label: 'Parfum', icon: Droplets, href: route('shop.category', 'parfum'), desc: 'Parfums & attars' },
+];
 
-function Navbar({ categories, cartCount, user }: NavbarProps) {
+function Navbar({ cartCount, user }: NavbarProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [scrolled, setScrolled] = useState(false);
+    const [categoriesOpen, setCategoriesOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -29,26 +31,21 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const navLinks: NavLink[] = [
-        { label: 'Accueil', href: route('home') },
-        { label: 'Nouveautés', href: route('shop.new') },
-        { label: 'Promotions', href: route('shop.sale') },
-        { label: 'Livres', href: route('shop.index'), hasDropdown: true, items: categories },
-        { label: "Maisons d'édition", href: route('publishers.index') },
-        { label: 'Femme', href: route('shop.category', 'femme') },
-        { label: 'Enfants', href: route('shop.category', 'enfants') },
-        { label: 'Packs', href: route('shop.packs') },
-        { label: 'Précommandes', href: route('shop.preorders') },
-        { label: 'Revendeurs', href: route('resellers.index') },
-        { label: 'Contact', href: route('contact') },
-    ];
-
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (searchQuery.trim()) {
             window.location.href = route('search') + '?q=' + encodeURIComponent(searchQuery);
         }
     };
+
+    const navLinks = [
+        { label: 'Accueil', href: route('home') },
+        { label: 'Nouveautés', href: route('shop.new') },
+        { label: 'Promotions', href: route('shop.sale') },
+        { label: 'Éditions', href: route('publishers.index') },
+        { label: 'Revendeurs', href: route('resellers.index') },
+        { label: 'Packs', href: route('shop.packs') },
+    ];
 
     return (
         <>
@@ -161,40 +158,56 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
                 <nav className="hidden md:block border-t border-stone-100 bg-white">
                     <div className="max-w-7xl mx-auto px-4">
                         <ul className="flex items-center gap-0">
+                            {/* Catégories mega menu */}
+                            <li className="relative group">
+                                <button className="flex items-center gap-1 px-3 py-3.5 text-sm font-medium text-stone-700 hover:text-[#1e3a5f] hover:bg-stone-50 transition-colors rounded">
+                                    Catégories <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />
+                                </button>
+                                <div className="absolute top-full left-0 bg-white shadow-xl border border-stone-100 rounded-xl w-[420px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                    <div className="p-4">
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {megaMenuCategories.map((cat) => {
+                                                const Icon = cat.icon;
+                                                return (
+                                                    <Link
+                                                        key={cat.label}
+                                                        href={cat.href}
+                                                        className="flex items-start gap-3 p-3 rounded-lg hover:bg-[#f5efe0] transition-colors group/item"
+                                                    >
+                                                        <div className="w-9 h-9 bg-[#1e3a5f]/8 rounded-lg flex items-center justify-center flex-shrink-0 group-hover/item:bg-[#1e3a5f] transition-colors">
+                                                            <Icon size={16} className="text-[#1e3a5f] group-hover/item:text-white transition-colors" />
+                                                        </div>
+                                                        <div>
+                                                            <div className="text-sm font-semibold text-stone-800 group-hover/item:text-[#1e3a5f] transition-colors leading-tight">
+                                                                {cat.label}
+                                                            </div>
+                                                            <div className="text-xs text-stone-400 mt-0.5">{cat.desc}</div>
+                                                        </div>
+                                                    </Link>
+                                                );
+                                            })}
+                                        </div>
+                                        <div className="border-t border-stone-100 mt-3 pt-3">
+                                            <Link
+                                                href={route('shop.index')}
+                                                className="flex items-center justify-center gap-2 w-full py-2 text-sm font-semibold text-[#1e3a5f] hover:bg-stone-50 rounded-lg transition-colors"
+                                            >
+                                                Voir tous les livres →
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            {/* Regular nav links */}
                             {navLinks.map((link) => (
-                                <li key={link.label} className="relative group">
-                                    {link.hasDropdown ? (
-                                        <>
-                                            <button className="flex items-center gap-1 px-3 py-3.5 text-sm font-medium text-stone-700 hover:text-[#1e3a5f] hover:bg-stone-50 transition-colors rounded">
-                                                {link.label} <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />
-                                            </button>
-                                            <div className="absolute top-full left-0 bg-white shadow-xl border border-stone-100 rounded-lg min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                                                <div className="p-2">
-                                                    {categories?.map((cat) => (
-                                                        <Link
-                                                            key={cat.id}
-                                                            href={route('shop.category', cat.slug)}
-                                                            className="block px-3 py-2 text-sm text-stone-700 hover:bg-[#1e3a5f] hover:text-white rounded-md transition-colors"
-                                                        >
-                                                            {cat.name}
-                                                        </Link>
-                                                    ))}
-                                                    <div className="border-t border-stone-100 mt-2 pt-2">
-                                                        <Link href={route('shop.index')} className="block px-3 py-2 text-sm font-semibold text-[#1e3a5f] hover:bg-stone-50 rounded-md">
-                                                            Voir tous les livres →
-                                                        </Link>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <Link
-                                            href={link.href}
-                                            className="block px-3 py-3.5 text-sm font-medium text-stone-700 hover:text-[#1e3a5f] hover:bg-stone-50 transition-colors rounded"
-                                        >
-                                            {link.label}
-                                        </Link>
-                                    )}
+                                <li key={link.label}>
+                                    <Link
+                                        href={link.href}
+                                        className="block px-3 py-3.5 text-sm font-medium text-stone-700 hover:text-[#1e3a5f] hover:bg-stone-50 transition-colors rounded"
+                                    >
+                                        {link.label}
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
@@ -205,16 +218,64 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
                 {isOpen && (
                     <div className="md:hidden border-t border-stone-100 bg-white shadow-lg">
                         <nav className="p-4 space-y-1">
-                            {navLinks.map((link) => (
+                            <Link
+                                href={route('home')}
+                                className="block px-4 py-3 text-stone-700 font-medium hover:bg-stone-50 hover:text-[#1e3a5f] rounded-lg transition-colors"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                Accueil
+                            </Link>
+                            <Link
+                                href={route('shop.new')}
+                                className="block px-4 py-3 text-stone-700 font-medium hover:bg-stone-50 hover:text-[#1e3a5f] rounded-lg transition-colors"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                Nouveautés
+                            </Link>
+                            <Link
+                                href={route('shop.sale')}
+                                className="block px-4 py-3 text-stone-700 font-medium hover:bg-stone-50 hover:text-[#1e3a5f] rounded-lg transition-colors"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                Promotions
+                            </Link>
+
+                            {/* Mobile categories accordion */}
+                            <div>
+                                <button
+                                    onClick={() => setCategoriesOpen(!categoriesOpen)}
+                                    className="w-full flex items-center justify-between px-4 py-3 text-stone-700 font-medium hover:bg-stone-50 hover:text-[#1e3a5f] rounded-lg transition-colors"
+                                >
+                                    Catégories
+                                    <ChevronDown size={16} className={`transition-transform duration-200 ${categoriesOpen ? 'rotate-180' : ''}`} />
+                                </button>
+                                {categoriesOpen && (
+                                    <div className="ml-4 space-y-1 mt-1">
+                                        {megaMenuCategories.map((cat) => (
+                                            <Link
+                                                key={cat.label}
+                                                href={cat.href}
+                                                className="block px-4 py-2.5 text-sm text-stone-600 hover:bg-stone-50 hover:text-[#1e3a5f] rounded-lg transition-colors"
+                                                onClick={() => setIsOpen(false)}
+                                            >
+                                                {cat.label}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
+                            {navLinks.slice(2).map((link) => (
                                 <Link
                                     key={link.label}
-                                    href={link.hasDropdown ? route('shop.index') : link.href}
+                                    href={link.href}
                                     className="block px-4 py-3 text-stone-700 font-medium hover:bg-stone-50 hover:text-[#1e3a5f] rounded-lg transition-colors"
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {link.label}
                                 </Link>
                             ))}
+
                             {!user && (
                                 <div className="border-t border-stone-100 pt-3 mt-3 space-y-1">
                                     <Link href={route('login')} className="block px-4 py-3 text-stone-700 font-medium hover:bg-stone-50 rounded-lg">
@@ -284,10 +345,20 @@ function Footer() {
                 <div>
                     <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Catégories</h4>
                     <ul className="space-y-2 text-sm">
-                        {['Croyance', 'Fiqh', 'Hadith', 'Coran', 'Éducation', 'Femme', 'Enfants', 'Biographies'].map((cat) => (
-                            <li key={cat}>
-                                <Link href={route('shop.category', cat.toLowerCase())} className="hover:text-[#c9a84c] transition-colors">
-                                    {cat}
+                        {[
+                            { label: 'Livres', slug: '' },
+                            { label: 'Croyance', slug: 'croyance' },
+                            { label: 'Santé', slug: 'sante' },
+                            { label: 'Enfants & Éducation', slug: 'enfants-education' },
+                            { label: 'Mariage', slug: 'mariage' },
+                            { label: 'Parfum', slug: 'parfum' },
+                        ].map((cat) => (
+                            <li key={cat.label}>
+                                <Link
+                                    href={cat.slug ? route('shop.category', cat.slug) : route('shop.index')}
+                                    className="hover:text-[#c9a84c] transition-colors"
+                                >
+                                    {cat.label}
                                 </Link>
                             </li>
                         ))}
@@ -349,7 +420,7 @@ interface MainLayoutProps {
 }
 
 export default function MainLayout({ children, title, description }: MainLayoutProps) {
-    const { auth, cartCount, categories } = usePage<PageProps>().props;
+    const { auth, cartCount } = usePage<PageProps>().props;
 
     return (
         <>
@@ -360,7 +431,6 @@ export default function MainLayout({ children, title, description }: MainLayoutP
 
             <div className="min-h-screen flex flex-col bg-stone-50">
                 <Navbar
-                    categories={categories as Category[]}
                     cartCount={cartCount as number}
                     user={auth?.user ?? null}
                 />

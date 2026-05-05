@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Concerns\FormatsProducts;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ProductController extends Controller
 {
     use FormatsProducts;
+
     public function index(Request $request)
     {
         $query = Product::active()
@@ -21,11 +23,13 @@ class ProductController extends Controller
 
         $products = $query->paginate(24)->through(fn($p) => $this->formatProduct($p));
         $categories = Category::where('is_active', true)->orderBy('sort_order')->get();
+        $publishers = Publisher::where('is_active', true)->orderBy('name')->get(['id', 'name', 'slug', 'is_our_editions']);
 
         return Inertia::render('Shop/Index', [
             'products' => $products,
             'categories' => $categories,
-            'filters' => $request->only(['price', 'category', 'availability', 'language', 'sort']),
+            'publishers' => $publishers,
+            'filters' => $request->only(['price', 'category', 'availability', 'language', 'publisher', 'is_new', 'sort']),
             'title' => 'Tous les livres',
         ]);
     }
@@ -106,47 +110,70 @@ class ProductController extends Controller
         ]);
     }
 
-    public function category(string $slug)
+    public function category(Request $request, string $slug)
     {
         $category = Category::where('slug', $slug)->where('is_active', true)->firstOrFail();
 
-        $products = Product::active()
+        $query = Product::active()
             ->where('category_id', $category->id)
-            ->with(['category', 'authors', 'images' => fn($q) => $q->where('is_primary', true)])
-            ->paginate(24)
-            ->through(fn($p) => $this->formatProduct($p));
+            ->with(['category', 'authors', 'images' => fn($q) => $q->where('is_primary', true)]);
 
+        $this->applyFilters($query, $request);
+
+        $products = $query->paginate(24)->through(fn($p) => $this->formatProduct($p));
         $categories = Category::where('is_active', true)->orderBy('sort_order')->get();
+        $publishers = Publisher::where('is_active', true)->orderBy('name')->get(['id', 'name', 'slug', 'is_our_editions']);
 
         return Inertia::render('Shop/Index', [
             'products' => $products,
             'categories' => $categories,
+            'publishers' => $publishers,
             'currentCategory' => $category,
-            'filters' => [],
+            'filters' => $request->only(['price', 'category', 'availability', 'language', 'publisher', 'is_new', 'sort']),
             'title' => $category->name,
         ]);
     }
 
     public function newProducts()
     {
-        return $this->filteredPage('is_new', true, 'Nouveautés', 'Shop/Index');
+        $products = Product::active()->where('is_new', true)
+            ->with(['category', 'authors', 'images' => fn($q) => $q->where('is_primary', true)])
+            ->latest()
+            ->paginate(24)
+            ->through(fn($p) => $this->formatProduct($p));
+
+        $publishers = Publisher::where('is_active', true)->orderBy('name')->get(['id', 'name', 'slug', 'is_our_editions']);
+
+        return Inertia::render('Shop/Index', [
+            'products' => $products,
+            'categories' => Category::where('is_active', true)->get(),
+            'publishers' => $publishers,
+            'filters' => [],
+            'title' => 'Nouveautés',
+        ]);
     }
 
     public function bestsellers()
     {
-        return $this->filteredPage('is_bestseller', true, 'Meilleures ventes', 'Shop/Index');
+        $publishers = Publisher::where('is_active', true)->orderBy('name')->get(['id', 'name', 'slug', 'is_our_editions']);
+
+        return $this->filteredPage('is_bestseller', true, 'Meilleures ventes', 'Shop/Index', $publishers);
     }
 
     public function saleProducts()
     {
         $products = Product::active()->onSale()
+            ->orderBy('discount_percent', 'desc')
             ->with(['category', 'authors', 'images' => fn($q) => $q->where('is_primary', true)])
             ->paginate(24)
             ->through(fn($p) => $this->formatProduct($p));
 
+        $publishers = Publisher::where('is_active', true)->orderBy('name')->get(['id', 'name', 'slug', 'is_our_editions']);
+
         return Inertia::render('Shop/Index', [
             'products' => $products,
             'categories' => Category::where('is_active', true)->get(),
+            'publishers' => $publishers,
             'filters' => [],
             'title' => 'Promotions',
         ]);
@@ -154,6 +181,8 @@ class ProductController extends Controller
 
     public function preorders()
     {
+        $publishers = Publisher::where('is_active', true)->orderBy('name')->get(['id', 'name', 'slug', 'is_our_editions']);
+
         $products = Product::active()->preorder()
             ->with(['category', 'authors', 'images' => fn($q) => $q->where('is_primary', true)])
             ->paginate(24)
@@ -162,6 +191,7 @@ class ProductController extends Controller
         return Inertia::render('Shop/Index', [
             'products' => $products,
             'categories' => Category::where('is_active', true)->get(),
+            'publishers' => $publishers,
             'filters' => [],
             'title' => 'Précommandes',
         ]);
@@ -174,15 +204,12 @@ class ProductController extends Controller
             ->paginate(24)
             ->through(fn($p) => $this->formatProduct($p));
 
-        return Inertia::render('Shop/Index', [
+        return Inertia::render('Shop/Packs', [
             'products' => $products,
-            'categories' => Category::where('is_active', true)->get(),
-            'filters' => [],
-            'title' => 'Packs & Lots',
         ]);
     }
 
-    private function filteredPage(string $field, $value, string $title, string $view)
+    private function filteredPage(string $field, $value, string $title, string $view, $publishers = [])
     {
         $products = Product::active()->where($field, $value)
             ->with(['category', 'authors', 'images' => fn($q) => $q->where('is_primary', true)])
@@ -192,6 +219,7 @@ class ProductController extends Controller
         return Inertia::render($view, [
             'products' => $products,
             'categories' => Category::where('is_active', true)->get(),
+            'publishers' => $publishers,
             'filters' => [],
             'title' => $title,
         ]);
@@ -201,6 +229,14 @@ class ProductController extends Controller
     {
         if ($category = $request->get('category')) {
             $query->whereHas('category', fn($q) => $q->where('slug', $category));
+        }
+
+        if ($publisher = $request->get('publisher')) {
+            $query->whereHas('publisher', fn($q) => $q->where('slug', $publisher));
+        }
+
+        if ($request->get('is_new')) {
+            $query->where('is_new', true);
         }
 
         if ($price = $request->get('price')) {
