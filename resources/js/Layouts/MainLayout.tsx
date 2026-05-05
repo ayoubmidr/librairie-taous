@@ -1,6 +1,6 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { ShoppingBag, Search, Menu, X, ChevronDown, Heart, User, Phone, Mail, Truck } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, ChevronDown, Heart, User, Phone, Mail, Truck, BookOpen, Leaf, Smile, HeartHandshake, Star, Sparkles, Package } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { PageProps, Category, AuthUser } from '@/types';
 
@@ -33,14 +33,10 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
         { label: 'Accueil', href: route('home') },
         { label: 'Nouveautés', href: route('shop.new') },
         { label: 'Promotions', href: route('shop.sale') },
-        { label: 'Livres', href: route('shop.index'), hasDropdown: true, items: categories },
-        { label: "Maisons d'édition", href: route('publishers.index') },
-        { label: 'Femme', href: route('shop.category', 'femme') },
-        { label: 'Enfants', href: route('shop.category', 'enfants') },
-        { label: 'Packs', href: route('shop.packs') },
-        { label: 'Précommandes', href: route('shop.preorders') },
+        { label: 'Catégories', href: route('shop.index'), hasDropdown: true, items: categories },
+        { label: 'Éditions', href: route('publishers.index') },
         { label: 'Revendeurs', href: route('resellers.index') },
-        { label: 'Contact', href: route('contact') },
+        { label: 'Packs', href: route('shop.packs') },
     ];
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
@@ -168,20 +164,35 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
                                             <button className="flex items-center gap-1 px-3 py-3.5 text-sm font-medium text-stone-700 hover:text-[#1e3a5f] hover:bg-stone-50 transition-colors rounded">
                                                 {link.label} <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />
                                             </button>
-                                            <div className="absolute top-full left-0 bg-white shadow-xl border border-stone-100 rounded-lg min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                                                <div className="p-2">
-                                                    {categories?.map((cat) => (
-                                                        <Link
-                                                            key={cat.id}
-                                                            href={route('shop.category', cat.slug)}
-                                                            className="block px-3 py-2 text-sm text-stone-700 hover:bg-[#1e3a5f] hover:text-white rounded-md transition-colors"
-                                                        >
-                                                            {cat.name}
+                                            {/* Mega Menu */}
+                                            <div className="absolute top-full left-1/2 -translate-x-1/2 w-[560px] bg-white shadow-2xl border border-stone-100 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                                <div className="p-6">
+                                                    <p className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-4">Parcourir par thème</p>
+                                                    <div className="grid grid-cols-3 gap-2">
+                                                        {[
+                                                            { label: 'Livres', slug: 'livres', icon: <BookOpen size={18} /> },
+                                                            { label: 'Santé', slug: 'sante', icon: <Leaf size={18} /> },
+                                                            { label: 'Enfants & Éducation', slug: 'enfants', icon: <Smile size={18} /> },
+                                                            { label: 'Mariage', slug: 'mariage', icon: <HeartHandshake size={18} /> },
+                                                            { label: 'Croyance', slug: 'croyance', icon: <Star size={18} /> },
+                                                            { label: 'Parfum', slug: 'parfum', icon: <Sparkles size={18} /> },
+                                                        ].map((cat) => (
+                                                            <Link
+                                                                key={cat.slug}
+                                                                href={route('shop.category', cat.slug)}
+                                                                className="flex items-center gap-3 px-3 py-3 rounded-lg text-stone-700 hover:bg-[#1e3a5f] hover:text-white transition-all duration-150 group/item"
+                                                            >
+                                                                <span className="text-[#1e3a5f] group-hover/item:text-white transition-colors">{cat.icon}</span>
+                                                                <span className="text-sm font-medium">{cat.label}</span>
+                                                            </Link>
+                                                        ))}
+                                                    </div>
+                                                    <div className="border-t border-stone-100 mt-4 pt-4 flex items-center justify-between">
+                                                        <Link href={route('shop.index')} className="text-sm font-semibold text-[#1e3a5f] hover:underline flex items-center gap-1">
+                                                            <Package size={14} /> Voir tout le catalogue
                                                         </Link>
-                                                    ))}
-                                                    <div className="border-t border-stone-100 mt-2 pt-2">
-                                                        <Link href={route('shop.index')} className="block px-3 py-2 text-sm font-semibold text-[#1e3a5f] hover:bg-stone-50 rounded-md">
-                                                            Voir tous les livres →
+                                                        <Link href={route('shop.packs')} className="text-sm text-stone-500 hover:text-[#1e3a5f] flex items-center gap-1 transition-colors">
+                                                            Packs & Lots →
                                                         </Link>
                                                     </div>
                                                 </div>
@@ -215,6 +226,27 @@ function Navbar({ categories, cartCount, user }: NavbarProps) {
                                     {link.label}
                                 </Link>
                             ))}
+                            {/* Sous-catégories mobile */}
+                            <div className="border-t border-stone-100 pt-3 mt-1">
+                                <p className="px-4 text-xs text-stone-400 font-semibold uppercase tracking-wider mb-2">Catégories</p>
+                                {[
+                                    { label: 'Livres', slug: 'livres' },
+                                    { label: 'Santé', slug: 'sante' },
+                                    { label: 'Enfants & Éducation', slug: 'enfants' },
+                                    { label: 'Mariage', slug: 'mariage' },
+                                    { label: 'Croyance', slug: 'croyance' },
+                                    { label: 'Parfum', slug: 'parfum' },
+                                ].map((cat) => (
+                                    <Link
+                                        key={cat.slug}
+                                        href={route('shop.category', cat.slug)}
+                                        className="block px-4 py-2.5 text-stone-600 text-sm hover:bg-stone-50 hover:text-[#1e3a5f] rounded-lg transition-colors"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        {cat.label}
+                                    </Link>
+                                ))}
+                            </div>
                             {!user && (
                                 <div className="border-t border-stone-100 pt-3 mt-3 space-y-1">
                                     <Link href={route('login')} className="block px-4 py-3 text-stone-700 font-medium hover:bg-stone-50 rounded-lg">

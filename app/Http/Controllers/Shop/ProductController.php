@@ -129,7 +129,20 @@ class ProductController extends Controller
 
     public function newProducts()
     {
-        return $this->filteredPage('is_new', true, 'Nouveautés', 'Shop/Index');
+        $products = Product::active()
+            ->where('is_new', true)
+            ->with(['category', 'authors', 'images' => fn($q) => $q->where('is_primary', true)])
+            ->latest()
+            ->paginate(24)
+            ->through(fn($p) => $this->formatProduct($p));
+
+        return Inertia::render('Shop/Index', [
+            'products' => $products,
+            'categories' => Category::where('is_active', true)->orderBy('sort_order')->get(),
+            'filters' => [],
+            'title' => 'Nouveautés',
+            'pageType' => 'new',
+        ]);
     }
 
     public function bestsellers()
@@ -141,14 +154,16 @@ class ProductController extends Controller
     {
         $products = Product::active()->onSale()
             ->with(['category', 'authors', 'images' => fn($q) => $q->where('is_primary', true)])
+            ->orderByRaw('ROUND((compare_price - price) / compare_price * 100) DESC')
             ->paginate(24)
             ->through(fn($p) => $this->formatProduct($p));
 
         return Inertia::render('Shop/Index', [
             'products' => $products,
-            'categories' => Category::where('is_active', true)->get(),
+            'categories' => Category::where('is_active', true)->orderBy('sort_order')->get(),
             'filters' => [],
             'title' => 'Promotions',
+            'pageType' => 'sale',
         ]);
     }
 

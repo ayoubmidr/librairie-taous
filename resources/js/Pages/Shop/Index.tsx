@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, router } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 import ProductCard from '@/Components/ProductCard';
-import { ChevronDown, X, SlidersHorizontal, BookOpen } from 'lucide-react';
+import { ChevronDown, X, SlidersHorizontal, BookOpen, Sparkles, Tag } from 'lucide-react';
 import { Category, PaginatedData, Product } from '@/types';
 
 interface ActiveFilters {
@@ -120,9 +120,10 @@ interface ShopIndexProps {
     filters: ActiveFilters;
     title?: string;
     currentCategory?: string;
+    pageType?: 'new' | 'sale' | 'default';
 }
 
-export default function ShopIndex({ products, categories, filters, title }: ShopIndexProps) {
+export default function ShopIndex({ products, categories, filters, title, pageType }: ShopIndexProps) {
     const [activeFilters, setActiveFilters] = useState<ActiveFilters>(filters || {});
     const [sortBy, setSortBy] = useState('newest');
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -155,10 +156,36 @@ export default function ShopIndex({ products, categories, filters, title }: Shop
                     <span className="text-stone-800">{title || 'Boutique'}</span>
                 </nav>
 
+                {/* Bannière Nouveautés */}
+                {pageType === 'new' && (
+                    <div className="bg-gradient-to-r from-[#1e3a5f] to-[#2d5a8e] rounded-2xl p-8 mb-8 flex items-center gap-6">
+                        <div className="bg-white/10 rounded-xl p-4">
+                            <Sparkles size={36} className="text-[#c9a84c]" />
+                        </div>
+                        <div>
+                            <h1 className="text-3xl font-serif font-bold text-white">Nouveautés</h1>
+                            <p className="text-stone-300 mt-1">Les derniers livres islamiques ajoutés à notre catalogue</p>
+                        </div>
+                    </div>
+                )}
+
+                {/* Bannière Promotions */}
+                {pageType === 'sale' && (
+                    <div className="bg-gradient-to-r from-red-600 to-red-500 rounded-2xl p-8 mb-8 flex items-center gap-6">
+                        <div className="bg-white/10 rounded-xl p-4">
+                            <Tag size={36} className="text-white" />
+                        </div>
+                        <div>
+                            <h1 className="text-3xl font-serif font-bold text-white">Promotions</h1>
+                            <p className="text-red-100 mt-1">Tous nos livres en réduction, triés du meilleur au moins bon</p>
+                        </div>
+                    </div>
+                )}
+
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8">
                     <div>
-                        <h1 className="text-3xl font-serif font-bold text-[#0f2240]">{title || 'Tous les livres'}</h1>
+                        {!pageType && <h1 className="text-3xl font-serif font-bold text-[#0f2240]">{title || 'Tous les livres'}</h1>}
                         <p className="text-stone-500 mt-1">{products?.total || 0} résultats</p>
                     </div>
 

@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { Heart, ShoppingBag, Star } from 'lucide-react';
+import { Heart, ShoppingBag, Star, Zap } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
@@ -143,7 +143,7 @@ export default function ProductCard({ product, showAddToCart = true }: ProductCa
                 )}
 
                 {product.is_low_stock && !product.is_out_of_stock && (
-                    <p className="text-xs text-orange-500 mt-1">⚡ Plus que {product.stock} en stock</p>
+                    <p className="text-xs text-orange-500 mt-1 flex items-center gap-1"><Zap size={11} className="fill-orange-500" /> Plus que {product.stock} en stock</p>
                 )}
             </div>
         </div>
