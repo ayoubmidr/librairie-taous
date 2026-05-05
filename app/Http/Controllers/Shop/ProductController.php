@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Concerns\FormatsProducts;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -21,11 +22,13 @@ class ProductController extends Controller
 
         $products = $query->paginate(24)->through(fn($p) => $this->formatProduct($p));
         $categories = Category::where('is_active', true)->orderBy('sort_order')->get();
+        $publishers = Publisher::where('is_active', true)->orderBy('name')->get(['id', 'name', 'slug']);
 
         return Inertia::render('Shop/Index', [
             'products' => $products,
             'categories' => $categories,
-            'filters' => $request->only(['price', 'category', 'availability', 'language', 'sort']),
+            'publishers' => $publishers,
+            'filters' => $request->only(['price', 'category', 'publisher', 'availability', 'language', 'is_new', 'sort']),
             'title' => 'Tous les livres',
         ]);
     }
@@ -216,6 +219,14 @@ class ProductController extends Controller
     {
         if ($category = $request->get('category')) {
             $query->whereHas('category', fn($q) => $q->where('slug', $category));
+        }
+
+        if ($publisher = $request->get('publisher')) {
+            $query->whereHas('publisher', fn($q) => $q->where('slug', $publisher));
+        }
+
+        if ($request->get('is_new') === '1') {
+            $query->where('is_new', true);
         }
 
         if ($price = $request->get('price')) {

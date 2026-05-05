@@ -2,32 +2,73 @@ import { useState } from 'react';
 import { Link, router } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 import ProductCard from '@/Components/ProductCard';
-import { ChevronDown, X, SlidersHorizontal, BookOpen, Sparkles, Tag } from 'lucide-react';
+import { ChevronDown, ChevronUp, X, SlidersHorizontal, BookOpen, Sparkles, Tag } from 'lucide-react';
 import { Category, PaginatedData, Product } from '@/types';
+
+interface Publisher {
+    id: number;
+    name: string;
+    slug: string;
+}
 
 interface ActiveFilters {
     price?: string | null;
     category?: string | null;
+    publisher?: string | null;
     availability?: string | null;
     language?: string | null;
+    is_new?: string | null;
     [key: string]: string | null | undefined;
+}
+
+interface FilterSectionProps {
+    title: string;
+    children: React.ReactNode;
+    defaultOpen?: boolean;
+}
+
+function FilterSection({ title, children, defaultOpen = true }: FilterSectionProps) {
+    const [open, setOpen] = useState(defaultOpen);
+    return (
+        <div className="border-b border-stone-100 pb-5 last:border-0 last:pb-0">
+            <button
+                onClick={() => setOpen(!open)}
+                className="w-full flex items-center justify-between text-sm font-semibold text-stone-800 mb-3"
+            >
+                {title}
+                {open ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+            </button>
+            {open && <div>{children}</div>}
+        </div>
+    );
 }
 
 interface FilterSidebarProps {
     activeFilters: ActiveFilters;
     onFilterChange: (key: string, value: string | null) => void;
     categories: Category[];
+    publishers: Publisher[];
 }
 
-function FilterSidebar({ activeFilters, onFilterChange, categories }: FilterSidebarProps) {
+function FilterSidebar({ activeFilters, onFilterChange, categories, publishers }: FilterSidebarProps) {
     return (
-        <div className="space-y-6">
+        <div className="space-y-5">
+
+            {/* Nouveautés */}
+            <FilterSection title="Nouveautés">
+                <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked={activeFilters.is_new === '1'}
+                        onChange={() => onFilterChange('is_new', activeFilters.is_new === '1' ? null : '1')}
+                        className="rounded border-stone-300 text-[#1e3a5f] focus:ring-[#1e3a5f]"
+                    />
+                    <span className="text-sm text-stone-600">Nouveautés uniquement</span>
+                </label>
+            </FilterSection>
+
             {/* Prix */}
-            <div>
-                <h3 className="font-semibold text-stone-800 mb-3 flex items-center justify-between">
-                    Prix
-                    <ChevronDown size={14} />
-                </h3>
+            <FilterSection title="Prix">
                 <div className="space-y-2">
                     {[
                         { label: 'Moins de 10€', value: '0-10' },
@@ -46,13 +87,12 @@ function FilterSidebar({ activeFilters, onFilterChange, categories }: FilterSide
                         </label>
                     ))}
                 </div>
-            </div>
+            </FilterSection>
 
             {/* Catégories */}
             {categories?.length > 0 && (
-                <div>
-                    <h3 className="font-semibold text-stone-800 mb-3">Catégorie</h3>
-                    <div className="space-y-2 max-h-60 overflow-y-auto">
+                <FilterSection title="Catégorie">
+                    <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
                         {categories.map((cat) => (
                             <label key={cat.id} className="flex items-center gap-2 cursor-pointer">
                                 <input
@@ -65,12 +105,30 @@ function FilterSidebar({ activeFilters, onFilterChange, categories }: FilterSide
                             </label>
                         ))}
                     </div>
-                </div>
+                </FilterSection>
+            )}
+
+            {/* Maison d'édition */}
+            {publishers?.length > 0 && (
+                <FilterSection title="Maison d'édition" defaultOpen={false}>
+                    <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
+                        {publishers.map((pub) => (
+                            <label key={pub.id} className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={activeFilters.publisher === pub.slug}
+                                    onChange={() => onFilterChange('publisher', activeFilters.publisher === pub.slug ? null : pub.slug)}
+                                    className="rounded border-stone-300 text-[#1e3a5f] focus:ring-[#1e3a5f]"
+                                />
+                                <span className="text-sm text-stone-600">{pub.name}</span>
+                            </label>
+                        ))}
+                    </div>
+                </FilterSection>
             )}
 
             {/* Disponibilité */}
-            <div>
-                <h3 className="font-semibold text-stone-800 mb-3">Disponibilité</h3>
+            <FilterSection title="Disponibilité">
                 <div className="space-y-2">
                     {[
                         { label: 'En stock', value: 'in_stock' },
@@ -87,11 +145,10 @@ function FilterSidebar({ activeFilters, onFilterChange, categories }: FilterSide
                         </label>
                     ))}
                 </div>
-            </div>
+            </FilterSection>
 
             {/* Langue */}
-            <div>
-                <h3 className="font-semibold text-stone-800 mb-3">Langue</h3>
+            <FilterSection title="Langue" defaultOpen={false}>
                 <div className="space-y-2">
                     {[
                         { label: 'Français', value: 'fr' },
@@ -109,7 +166,7 @@ function FilterSidebar({ activeFilters, onFilterChange, categories }: FilterSide
                         </label>
                     ))}
                 </div>
-            </div>
+            </FilterSection>
         </div>
     );
 }
@@ -117,26 +174,23 @@ function FilterSidebar({ activeFilters, onFilterChange, categories }: FilterSide
 interface ShopIndexProps {
     products: PaginatedData<Product>;
     categories: Category[];
+    publishers?: Publisher[];
     filters: ActiveFilters;
     title?: string;
     currentCategory?: string;
     pageType?: 'new' | 'sale' | 'default';
 }
 
-export default function ShopIndex({ products, categories, filters, title, pageType }: ShopIndexProps) {
+export default function ShopIndex({ products, categories, publishers = [], filters, title, pageType }: ShopIndexProps) {
     const [activeFilters, setActiveFilters] = useState<ActiveFilters>(filters || {});
-    const [sortBy, setSortBy] = useState('newest');
+    const [sortBy, setSortBy] = useState(filters?.sort || 'newest');
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
     const handleFilterChange = (key: string, value: string | null) => {
         const newFilters = { ...activeFilters, [key]: value };
         if (!value) delete newFilters[key];
         setActiveFilters(newFilters);
-
-        router.get(window.location.pathname, {
-            ...newFilters,
-            sort: sortBy,
-        }, { preserveState: true, replace: true });
+        router.get(window.location.pathname, { ...newFilters, sort: sortBy }, { preserveState: true, replace: true });
     };
 
     const handleSort = (value: string) => {
@@ -144,11 +198,17 @@ export default function ShopIndex({ products, categories, filters, title, pageTy
         router.get(window.location.pathname, { ...activeFilters, sort: value }, { preserveState: true, replace: true });
     };
 
-    const activeFilterCount = Object.values(activeFilters).filter(Boolean).length;
+    const activeFilterCount = Object.values(activeFilters).filter(v => v && v !== sortBy).length;
+
+    const resetFilters = () => {
+        setActiveFilters({});
+        router.get(window.location.pathname, {});
+    };
 
     return (
         <MainLayout title={title || 'Boutique'}>
             <div className="max-w-7xl mx-auto px-4 py-8">
+
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-2 text-sm text-stone-500 mb-6">
                     <Link href={route('home')} className="hover:text-[#1e3a5f]">Accueil</Link>
@@ -182,13 +242,21 @@ export default function ShopIndex({ products, categories, filters, title, pageTy
                     </div>
                 )}
 
-                {/* Header */}
-                <div className="flex items-center justify-between mb-8">
-                    <div>
-                        {!pageType && <h1 className="text-3xl font-serif font-bold text-[#0f2240]">{title || 'Tous les livres'}</h1>}
-                        <p className="text-stone-500 mt-1">{products?.total || 0} résultats</p>
-                    </div>
+                {/* Titre page normale */}
+                {!pageType && (
+                    <h1 className="text-3xl font-serif font-bold text-[#0f2240] mb-2">{title || 'Tous les livres'}</h1>
+                )}
 
+                {/* Barre de contrôle */}
+                <div className="flex items-center justify-between mb-6 gap-4">
+                    <div className="flex items-center gap-3">
+                        <span className="text-stone-500 text-sm">{products?.total || 0} résultat{(products?.total || 0) > 1 ? 's' : ''}</span>
+                        {activeFilterCount > 0 && (
+                            <button onClick={resetFilters} className="text-xs text-red-500 hover:underline flex items-center gap-1">
+                                <X size={12} /> Réinitialiser les filtres
+                            </button>
+                        )}
+                    </div>
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => setMobileFiltersOpen(true)}
@@ -197,13 +265,12 @@ export default function ShopIndex({ products, categories, filters, title, pageTy
                             <SlidersHorizontal size={16} />
                             Filtres {activeFilterCount > 0 && <span className="bg-[#1e3a5f] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">{activeFilterCount}</span>}
                         </button>
-
                         <select
                             value={sortBy}
                             onChange={(e) => handleSort(e.target.value)}
-                            className="border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1e3a5f]"
+                            className="border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1e3a5f] bg-white"
                         >
-                            <option value="newest">Nouveautés</option>
+                            <option value="newest">Plus récents</option>
                             <option value="bestselling">Meilleures ventes</option>
                             <option value="price_asc">Prix croissant</option>
                             <option value="price_desc">Prix décroissant</option>
@@ -217,10 +284,12 @@ export default function ShopIndex({ products, categories, filters, title, pageTy
                     <aside className="hidden lg:block w-64 flex-shrink-0">
                         <div className="sticky top-24 bg-white rounded-xl border border-stone-100 p-5">
                             <div className="flex items-center justify-between mb-5">
-                                <h2 className="font-bold text-stone-800">Filtres</h2>
+                                <h2 className="font-bold text-stone-800 flex items-center gap-2">
+                                    <SlidersHorizontal size={16} className="text-[#1e3a5f]" /> Filtres
+                                </h2>
                                 {activeFilterCount > 0 && (
-                                    <button onClick={() => { setActiveFilters({}); router.get(window.location.pathname, {}); }} className="text-xs text-red-500 hover:underline">
-                                        Réinitialiser
+                                    <button onClick={resetFilters} className="text-xs text-red-500 hover:underline">
+                                        Tout effacer
                                     </button>
                                 )}
                             </div>
@@ -228,15 +297,31 @@ export default function ShopIndex({ products, categories, filters, title, pageTy
                                 activeFilters={activeFilters}
                                 onFilterChange={handleFilterChange}
                                 categories={categories}
+                                publishers={publishers}
                             />
                         </div>
                     </aside>
 
-                    {/* Products */}
-                    <div className="flex-1">
+                    {/* Grille produits */}
+                    <div className="flex-1 min-w-0">
+                        {/* Tags filtres actifs */}
+                        {activeFilterCount > 0 && (
+                            <div className="flex flex-wrap gap-2 mb-5">
+                                {Object.entries(activeFilters).filter(([k, v]) => v && k !== 'sort').map(([key, value]) => (
+                                    <button
+                                        key={key}
+                                        onClick={() => handleFilterChange(key, null)}
+                                        className="flex items-center gap-1 bg-[#1e3a5f]/10 text-[#1e3a5f] text-xs font-medium px-3 py-1.5 rounded-full hover:bg-red-50 hover:text-red-600 transition-colors"
+                                    >
+                                        {value} <X size={11} />
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+
                         {products?.data?.length > 0 ? (
                             <>
-                                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
                                     {products.data.map((product) => (
                                         <ProductCard key={product.id} product={product} />
                                     ))}
@@ -244,7 +329,7 @@ export default function ShopIndex({ products, categories, filters, title, pageTy
 
                                 {/* Pagination */}
                                 {products.last_page > 1 && (
-                                    <div className="mt-10 flex justify-center gap-2">
+                                    <div className="mt-10 flex justify-center gap-2 flex-wrap">
                                         {Array.from({ length: products.last_page }, (_, i) => i + 1).map((page) => (
                                             <Link
                                                 key={page}
@@ -262,14 +347,11 @@ export default function ShopIndex({ products, categories, filters, title, pageTy
                                 )}
                             </>
                         ) : (
-                            <div className="text-center py-20">
-                                <div className="flex justify-center mb-4"><BookOpen size={64} className="text-stone-300" /></div>
+                            <div className="text-center py-24">
+                                <div className="flex justify-center mb-4"><BookOpen size={56} className="text-stone-200" /></div>
                                 <h3 className="text-xl font-semibold text-stone-700 mb-2">Aucun produit trouvé</h3>
-                                <p className="text-stone-500 mb-6">Essayez de modifier vos filtres</p>
-                                <button
-                                    onClick={() => { setActiveFilters({}); router.get(window.location.pathname, {}); }}
-                                    className="btn-primary"
-                                >
+                                <p className="text-stone-400 mb-6">Essayez de modifier ou réinitialiser vos filtres</p>
+                                <button onClick={resetFilters} className="btn-primary">
                                     Voir tous les produits
                                 </button>
                             </div>
@@ -293,6 +375,7 @@ export default function ShopIndex({ products, categories, filters, title, pageTy
                             activeFilters={activeFilters}
                             onFilterChange={(key, value) => { handleFilterChange(key, value); setMobileFiltersOpen(false); }}
                             categories={categories}
+                            publishers={publishers}
                         />
                     </div>
                 </div>

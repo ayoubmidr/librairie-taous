@@ -10,7 +10,10 @@ class PublisherController extends Controller
 {
     public function index()
     {
-        $publishers = Publisher::withCount('products')->orderBy('name')->get();
+        $publishers = Publisher::withCount('products')
+            ->orderByDesc('is_our_editions')
+            ->orderBy('name')
+            ->get();
         return Inertia::render('Publishers/Index', compact('publishers'));
     }
 
