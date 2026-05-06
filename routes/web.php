@@ -13,6 +13,7 @@ use App\Http\Controllers\DonationController;
 use App\Http\Controllers\ResellerController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\ShippingRequestController;
 use Illuminate\Support\Facades\Route;
 
 // ─── Home ───────────────────────────────────────────────────────────────────
@@ -88,6 +89,10 @@ Route::get('/don-sadaqa', [DonationController::class, 'show'])->name('donation')
 Route::post('/don-sadaqa', [DonationController::class, 'store'])->name('donation.store');
 Route::get('/suivi-commande', [StaticPageController::class, 'trackOrder'])->name('track-order');
 Route::get('/pages/{slug}', [StaticPageController::class, 'show'])->name('pages.show');
+
+// ─── International Shipping ───────────────────────────────────────────────────
+Route::get('/livraison-internationale', [ShippingRequestController::class, 'show'])->name('shipping.international');
+Route::post('/livraison-internationale', [ShippingRequestController::class, 'store'])->name('shipping.international.store');
 
 // ─── Newsletter ───────────────────────────────────────────────────────────────
 Route::post('/newsletter', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');

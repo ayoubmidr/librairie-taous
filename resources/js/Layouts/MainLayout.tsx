@@ -1,6 +1,6 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { ShoppingBag, Search, Menu, X, ChevronDown, Heart, User, Phone, Mail, Truck, BookOpen, Leaf, Smile, HeartHandshake, Star, Sparkles, Package, Bell, CheckCircle, Copy } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, ChevronDown, Heart, User, Phone, Mail, Truck, BookOpen, Leaf, Smile, HeartHandshake, Star, Sparkles, Package, Bell, CheckCircle, Copy, MessageSquare } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { PageProps, Category, AuthUser } from '@/types';
 
@@ -333,6 +333,7 @@ function Footer() {
                         <li><Link href={route('faq')} className="hover:text-[#c9a84c] transition-colors">FAQ</Link></li>
                         <li><Link href={route('contact')} className="hover:text-[#c9a84c] transition-colors">Contact</Link></li>
                         <li><Link href={route('pages.show', 'livraison-retours')} className="hover:text-[#c9a84c] transition-colors">Livraison & Retours</Link></li>
+                        <li><Link href={route('shipping.international')} className="hover:text-[#c9a84c] transition-colors">Livraison internationale</Link></li>
                         <li><Link href={route('pages.show', 'paiements-securises')} className="hover:text-[#c9a84c] transition-colors">Paiements sécurisés</Link></li>
                         <li><Link href={route('track-order')} className="hover:text-[#c9a84c] transition-colors">Suivre ma commande</Link></li>
                         <li><Link href={route('resellers.index')} className="hover:text-[#c9a84c] transition-colors">Revendeurs / Gros</Link></li>
@@ -371,6 +372,24 @@ function Footer() {
                 </div>
             </div>
         </footer>
+    );
+}
+
+const WHATSAPP_NUMBER = '33123456789';
+const WHATSAPP_DEFAULT_MESSAGE = encodeURIComponent('Bonjour, je souhaite passer une commande urgente ou me renseigner sur la livraison internationale.');
+
+function WhatsAppButton() {
+    return (
+        <a
+            href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_DEFAULT_MESSAGE}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Commander via WhatsApp"
+            className="fixed bottom-6 left-6 z-50 flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-4 py-3 rounded-full shadow-xl font-semibold text-sm transition-all duration-300 hover:scale-105"
+        >
+            <MessageSquare size={18} />
+            <span className="hidden sm:inline">Commande urgente</span>
+        </a>
     );
 }
 
@@ -519,6 +538,7 @@ export default function MainLayout({ children, title, description }: MainLayoutP
 
                 <Footer />
                 <NewsletterWidget />
+                <WhatsAppButton />
             </div>
         </>
     );

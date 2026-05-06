@@ -4,6 +4,7 @@ import MainLayout from '@/Layouts/MainLayout';
 import {
     Trash2, Plus, Minus, ShoppingBag, Tag, ChevronRight, ShieldCheck, Truck,
     AlertTriangle, PartyPopper, MapPin, Zap, CheckCircle, User, Package,
+    Globe, MessageSquare,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
@@ -59,6 +60,21 @@ function getShippingCost(optionId: ShippingOption['id'], subtotal: number): numb
     return subtotal < 50 ? option.prices[0] : option.prices[1];
 }
 
+// ─── Constants ──────────────────────────────────────────────────────────────
+const WHATSAPP_NUMBER = '33123456789';
+
+const STANDARD_COUNTRIES = [
+    { name: 'Allemagne', flag: '🇩🇪' },
+    { name: 'Belgique',  flag: '🇧🇪' },
+    { name: 'Espagne',   flag: '🇪🇸' },
+    { name: 'France',    flag: '🇫🇷' },
+    { name: 'Italie',    flag: '🇮🇹' },
+    { name: 'Luxembourg', flag: '🇱🇺' },
+    { name: 'Pays-Bas',  flag: '🇳🇱' },
+    { name: 'Pologne',   flag: '🇵🇱' },
+    { name: 'Portugal',  flag: '🇵🇹' },
+];
+
 // ─── Helper formatters ───────────────────────────────────────────────────────
 const toNumber = (value: unknown): number => {
     const n = Number.parseFloat(String(value ?? 0));
@@ -67,6 +83,46 @@ const toNumber = (value: unknown): number => {
 const money = (value: unknown): string => toNumber(value).toFixed(2);
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
+
+function InternationalShippingBanner() {
+    return (
+        <div className="bg-white rounded-xl border border-stone-100 p-5">
+            <div className="flex items-center gap-2 mb-3">
+                <Globe size={16} className="text-[#1e3a5f]" />
+                <h3 className="font-semibold text-stone-800 text-sm">Pays desservis en livraison standard</h3>
+            </div>
+            <div className="flex flex-wrap gap-2 mb-4">
+                {STANDARD_COUNTRIES.map(c => (
+                    <span key={c.name} className="inline-flex items-center gap-1.5 bg-[#fdf8f0] border border-[#c9a84c]/30 text-stone-700 px-2.5 py-1 rounded-lg text-xs font-medium">
+                        <span>{c.flag}</span> {c.name}
+                    </span>
+                ))}
+            </div>
+            <div className="bg-[#1e3a5f]/5 border border-[#1e3a5f]/10 rounded-lg p-3 flex flex-col sm:flex-row sm:items-center gap-3">
+                <div className="flex-1">
+                    <p className="text-stone-700 text-sm font-medium">Livraison possible partout dans le monde</p>
+                    <p className="text-stone-500 text-xs mt-0.5">Sur demande avec tarif personnalisé — réponse rapide par WhatsApp ou email.</p>
+                </div>
+                <div className="flex gap-2 flex-shrink-0">
+                    <Link
+                        href={route('shipping.international')}
+                        className="inline-flex items-center gap-1.5 bg-[#1e3a5f] text-white px-3 py-2 rounded-lg text-xs font-semibold hover:bg-[#2d5a8e] transition-colors"
+                    >
+                        <Globe size={13} /> Demander un tarif
+                    </Link>
+                    <a
+                        href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Bonjour, je souhaite commander et me renseigner sur la livraison internationale.')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-3 py-2 rounded-lg text-xs font-semibold transition-colors"
+                    >
+                        <MessageSquare size={13} /> WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 function FreeShippingBar({ subtotal }: { subtotal: number }) {
     const remaining = Math.max(0, FREE_THRESHOLD - subtotal);
@@ -377,6 +433,9 @@ export default function Cart({ cart, summary }: CartProps) {
                             selected={selectedShipping}
                             onChange={setSelectedShipping}
                         />
+
+                        {/* Livraison internationale */}
+                        <InternationalShippingBanner />
 
                         <Link href={route('shop.index')} className="inline-flex items-center gap-2 text-[#1e3a5f] font-medium text-sm hover:gap-3 transition-all">
                             ← Continuer mes achats
