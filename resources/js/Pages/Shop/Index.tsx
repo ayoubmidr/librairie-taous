@@ -122,8 +122,9 @@ interface ShopIndexProps {
     currentCategory?: string;
 }
 
-export default function ShopIndex({ products, categories, filters, title }: ShopIndexProps) {
-    const [activeFilters, setActiveFilters] = useState<ActiveFilters>(filters || {});
+export default function ShopIndex({ products, categories = [], filters, title }: ShopIndexProps) {
+    const safeFilters: ActiveFilters = filters && !Array.isArray(filters) && typeof filters === 'object' ? filters : {};
+    const [activeFilters, setActiveFilters] = useState<ActiveFilters>(safeFilters);
     const [sortBy, setSortBy] = useState('newest');
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 

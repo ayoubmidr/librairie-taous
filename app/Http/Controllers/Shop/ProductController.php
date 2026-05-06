@@ -25,7 +25,7 @@ class ProductController extends Controller
         return Inertia::render('Shop/Index', [
             'products' => $products,
             'categories' => $categories,
-            'filters' => $request->only(['price', 'category', 'availability', 'language', 'sort']),
+            'filters' => (object) $request->only(['price', 'category', 'availability', 'language', 'sort']),
             'title' => 'Tous les livres',
         ]);
     }
@@ -122,7 +122,7 @@ class ProductController extends Controller
             'products' => $products,
             'categories' => $categories,
             'currentCategory' => $category,
-            'filters' => [],
+            'filters' => new \stdClass(),
             'title' => $category->name,
         ]);
     }
@@ -147,7 +147,7 @@ class ProductController extends Controller
         return Inertia::render('Shop/Index', [
             'products' => $products,
             'categories' => Category::where('is_active', true)->get(),
-            'filters' => [],
+            'filters' => new \stdClass(),
             'title' => 'Promotions',
         ]);
     }
@@ -162,7 +162,7 @@ class ProductController extends Controller
         return Inertia::render('Shop/Index', [
             'products' => $products,
             'categories' => Category::where('is_active', true)->get(),
-            'filters' => [],
+            'filters' => new \stdClass(),
             'title' => 'Précommandes',
         ]);
     }
@@ -177,7 +177,7 @@ class ProductController extends Controller
         return Inertia::render('Shop/Index', [
             'products' => $products,
             'categories' => Category::where('is_active', true)->get(),
-            'filters' => [],
+            'filters' => new \stdClass(),
             'title' => 'Packs & Lots',
         ]);
     }
@@ -192,7 +192,7 @@ class ProductController extends Controller
         return Inertia::render($view, [
             'products' => $products,
             'categories' => Category::where('is_active', true)->get(),
-            'filters' => [],
+            'filters' => new \stdClass(),
             'title' => $title,
         ]);
     }
