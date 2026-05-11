@@ -55,7 +55,7 @@ export default function Orders({ orders }: OrdersProps) {
                                     </p>
                                 </div>
                                 <div className="text-right flex-shrink-0">
-                                    <p className="font-bold text-[#1a4731] text-lg">{parseFloat(String(order.total)).toFixed(2)} €</p>
+                                    <p className="font-bold text-[#1a4731] text-lg">{parseFloat(String(order.total ?? 0)).toFixed(2)} €</p>
                                 </div>
                                 <ChevronRight size={16} className="text-stone-300 flex-shrink-0" />
                             </Link>

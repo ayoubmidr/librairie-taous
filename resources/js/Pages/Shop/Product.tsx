@@ -282,7 +282,7 @@ export default function ProductShow({ product, relatedProducts, reviews }: Produ
                                         <div key={review.id} className="border-b border-stone-100 pb-6">
                                             <div className="flex items-start gap-4">
                                                 <div className="w-10 h-10 bg-[#1a4731] rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
-                                                    {review.author_name[0]}
+                                                    {review.author_name?.[0] ?? '?'}
                                                 </div>
                                                 <div className="flex-1">
                                                     <div className="flex items-center justify-between mb-1">

@@ -57,7 +57,7 @@ export default function AccountIndex({ user, recentOrders, ordersCount, wishlist
                 {/* Header */}
                 <div className="flex items-center gap-4 mb-8">
                     <div className="w-16 h-16 bg-[#1a4731] rounded-2xl flex items-center justify-center text-white text-2xl font-serif font-bold">
-                        {user.name[0]}
+                        {user.name?.[0] ?? '?'}
                     </div>
                     <div>
                         <h1 className="text-2xl font-serif font-bold text-[#0f2b1c]">{user.name}</h1>
@@ -117,7 +117,7 @@ export default function AccountIndex({ user, recentOrders, ordersCount, wishlist
                                         </p>
                                     </div>
                                     <div className="text-right flex-shrink-0">
-                                        <p className="font-bold text-[#1a4731]">{parseFloat(String(order.total)).toFixed(2)} €</p>
+                                        <p className="font-bold text-[#1a4731]">{parseFloat(String(order.total ?? 0)).toFixed(2)} €</p>
                                     </div>
                                     <ChevronRight size={16} className="text-stone-300" />
                                 </Link>

@@ -288,7 +288,7 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                                     className="w-full flex items-center justify-center gap-2 bg-[#1a4731] text-white py-4 rounded-lg font-bold text-lg hover:bg-[#2d7a52] transition-colors disabled:opacity-50"
                                 >
                                     <ShieldCheck size={20} />
-                                    {loading ? 'Traitement en cours...' : `Payer ${summary?.total?.toFixed(2)} €`}
+                                    {loading ? 'Traitement en cours...' : `Payer ${summary?.total != null ? parseFloat(String(summary.total)).toFixed(2) : '0.00'} €`}
                                 </button>
                             </div>
                         )}
@@ -317,21 +317,21 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                             <div className="border-t border-stone-100 pt-4 space-y-2 text-sm">
                                 <div className="flex justify-between text-stone-600">
                                     <span>Sous-total</span>
-                                    <span>{summary?.subtotal?.toFixed(2)} €</span>
+                                    <span>{summary?.subtotal != null ? parseFloat(String(summary.subtotal)).toFixed(2) : '0.00'} €</span>
                                 </div>
-                                {summary?.coupon_discount > 0 && (
+                                {(summary?.coupon_discount ?? 0) > 0 && (
                                     <div className="flex justify-between text-green-600">
                                         <span>Réduction</span>
-                                        <span>-{summary.coupon_discount.toFixed(2)} €</span>
+                                        <span>-{parseFloat(String(summary!.coupon_discount)).toFixed(2)} €</span>
                                     </div>
                                 )}
                                 <div className="flex justify-between text-stone-600">
                                     <span>Livraison</span>
-                                    <span>{summary?.shipping === 0 ? 'Gratuite' : summary?.shipping ? `${summary.shipping.toFixed(2)} €` : 'À calculer'}</span>
+                                    <span>{summary?.shipping === 0 ? 'Gratuite' : summary?.shipping != null ? `${parseFloat(String(summary.shipping)).toFixed(2)} €` : 'À calculer'}</span>
                                 </div>
                                 <div className="flex justify-between font-bold text-base pt-2 border-t border-stone-100">
                                     <span>Total TTC</span>
-                                    <span className="text-[#1a4731]">{summary?.total?.toFixed(2)} €</span>
+                                    <span className="text-[#1a4731]">{summary?.total != null ? parseFloat(String(summary.total)).toFixed(2) : '0.00'} €</span>
                                 </div>
                             </div>
                         </div>

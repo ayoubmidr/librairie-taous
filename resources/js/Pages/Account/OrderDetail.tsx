@@ -92,18 +92,18 @@ export default function OrderDetail({ order }: OrderDetailProps) {
 
                         <div className="border-t border-stone-100 mt-6 pt-4 space-y-2 text-sm">
                             <div className="flex justify-between text-stone-600">
-                                <span>Sous-total</span><span>{parseFloat(String(order.subtotal)).toFixed(2)} €</span>
+                                <span>Sous-total</span><span>{parseFloat(String(order.subtotal ?? 0)).toFixed(2)} €</span>
                             </div>
-                            {order.discount_amount > 0 && (
+                            {(order.discount_amount ?? 0) > 0 && (
                                 <div className="flex justify-between text-green-600">
-                                    <span>Réduction</span><span>-{parseFloat(String(order.discount_amount)).toFixed(2)} €</span>
+                                    <span>Réduction</span><span>-{parseFloat(String(order.discount_amount ?? 0)).toFixed(2)} €</span>
                                 </div>
                             )}
                             <div className="flex justify-between text-stone-600">
-                                <span>Livraison</span><span>{parseFloat(String(order.shipping_cost)).toFixed(2)} €</span>
+                                <span>Livraison</span><span>{parseFloat(String(order.shipping_cost ?? 0)).toFixed(2)} €</span>
                             </div>
                             <div className="flex justify-between font-bold text-lg pt-2 border-t border-stone-100">
-                                <span>Total</span><span className="text-[#1a4731]">{parseFloat(String(order.total)).toFixed(2)} €</span>
+                                <span>Total</span><span className="text-[#1a4731]">{parseFloat(String(order.total ?? 0)).toFixed(2)} €</span>
                             </div>
                         </div>
                     </div>
