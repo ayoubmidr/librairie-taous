@@ -8,6 +8,8 @@ use App\Models\BulkDiscount;
 use App\Models\Category;
 use App\Models\Faq;
 use App\Models\Order;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use App\Models\OrderItem;
 use App\Models\Page;
 use App\Models\Product;
@@ -28,6 +30,31 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
+        // ── Truncate all tables (idempotent re-seed) ───────────────────────
+        Schema::disableForeignKeyConstraints();
+        DB::table('product_author')->truncate();
+        DB::table('product_tag')->truncate();
+        DB::table('bulk_discounts')->truncate();
+        DB::table('product_images')->truncate();
+        DB::table('wishlists')->truncate();
+        DB::table('reviews')->truncate();
+        DB::table('order_items')->truncate();
+        DB::table('orders')->truncate();
+        DB::table('coupons')->truncate();
+        DB::table('products')->truncate();
+        DB::table('tags')->truncate();
+        DB::table('authors')->truncate();
+        DB::table('publishers')->truncate();
+        DB::table('categories')->truncate();
+        DB::table('shipping_rates')->truncate();
+        DB::table('shipping_zones')->truncate();
+        DB::table('banners')->truncate();
+        DB::table('faqs')->truncate();
+        DB::table('pages')->truncate();
+        DB::table('addresses')->truncate();
+        DB::table('users')->truncate();
+        Schema::enableForeignKeyConstraints();
+
         // ── Users ──────────────────────────────────────────────────────────
         User::create([
             'name'     => 'Admin Taous',
