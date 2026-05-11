@@ -28,6 +28,10 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
         auth()->user()->update(['last_login_at' => now()]);
 
+        if (auth()->user()->role === 'admin') {
+            return redirect()->intended('/admin');
+        }
+
         return redirect()->intended(route('account.index'));
     }
 
