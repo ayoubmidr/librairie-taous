@@ -308,7 +308,7 @@ export default function CheckoutIndex({ cart, summary, shippingRates, savedAddre
                                             <p className="text-stone-400">x{item.quantity}</p>
                                         </div>
                                         <span className="font-semibold text-stone-800 flex-shrink-0">
-                                            {(item.price * item.quantity).toFixed(2)} €
+                                            {(parseFloat(String(item.price)) * item.quantity).toFixed(2)} €
                                         </span>
                                     </div>
                                 ))}

@@ -139,8 +139,8 @@ export default function Cart({ cart, summary }: CartProps) {
                                         </div>
 
                                         <div className="text-right">
-                                            <div className="font-bold text-[#1a4731]">{(item.price * item.quantity).toFixed(2)} €</div>
-                                            <div className="text-stone-400 text-xs">{item.price.toFixed(2)} € / unité</div>
+                                            <div className="font-bold text-[#1a4731]">{(parseFloat(String(item.price)) * item.quantity).toFixed(2)} €</div>
+                                            <div className="text-stone-400 text-xs">{parseFloat(String(item.price)).toFixed(2)} € / unité</div>
                                         </div>
                                     </div>
                                 </div>

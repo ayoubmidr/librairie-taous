@@ -48,7 +48,7 @@ class CartController extends Controller
                 'product_name' => $product->name,
                 'product_slug' => $product->slug,
                 'image' => $product->main_image_url,
-                'price' => $product->price,
+                'price' => (float) $product->price,
                 'quantity' => $quantity,
                 'is_preorder' => $product->type === 'preorder',
                 'preorder_date' => $product->preorder_date,
